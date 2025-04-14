@@ -7,43 +7,48 @@ body, html {
     flex-direction: column;
 }
 
+
 #header {
+    display: flex;
     height: 10%;
     background: #3a3533;
-    text-align: left;
-    font-family: "Gill Sans", sans-serif; 
-    font-size: 30px;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Logo dans le header */ 
-#header img {
-    max-height: 90px;
-    margin-left: 10px;
-    margin-top: 2px;   
-}
+    #header img {
+        max-height: 90px;
+        margin-left: 10px;
+        margin-top: 5px;   
+    }
+
+
+
 
 #map {
     flex-grow: 1;
     height: calc(100vh - 200px);
 }
 
-/* SIDE BAR */
-#menu3 {
-    position: absolute;
-    top: 10%;
-    width: 20%;
-    bottom: 0px;
-    right: 0px;
-    background: #ffa566;
-    font-family: "Gill Sans", sans-serif;
-    padding: 15px;  
-    border-radius: 0px;   
-    color: white;
-    display: inline-flex;
-    flex-direction: column;
-}
+/*SIDE BAR */
+    #menu3 {
+        position: absolute;
+        top: 10%;
+        width: 20%;
+        bottom: 0px;
+        right: 0px;
+        background: #ffa566;
+        font-family: "Gill Sans", sans-serif;
+        padding: 15px;  
+        border-radius: 0px;   
+        color: white;
+        display: inline-flex; /* Utiliser inline-flex pour adapter la largeur au contenu */
+        flex-direction: column; /* Assure que le contenu est empilé verticalement */
+    
+    }
 
-#menu3 label {
+#menu3 label { /*mettre "label" permet de changer uniquement un élément du menu et pas toute la sélection*/
     display: block; 
     margin-bottom: 15px; 
 }
