@@ -9,19 +9,22 @@ body, html {
 
 
 #header {
+    display: flex;
     height: 10%;
     background: #3a3533;
-    text-align: left;
-    font-family: "Gill Sans", sans-serif; 
-    font-size: 30px; /*taille de la police */
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Logo dans le header */ 
     #header img {
         max-height: 90px;
         margin-left: 10px;
-        margin-top: 2px;   
+        margin-top: 5px;   
     }
+
+
+
 
 #map {
     flex-grow: 1;
@@ -42,12 +45,9 @@ body, html {
         color: white;
         display: inline-flex; /* Utiliser inline-flex pour adapter la largeur au contenu */
         flex-direction: column; /* Assure que le contenu est empilé verticalement */
-    
     }
 
 #menu3 label { /*mettre "label" permet de changer uniquement un élément du menu et pas toute la sélection*/
     display: block; 
     margin-bottom: 15px; 
 }
-
-
