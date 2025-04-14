@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Val'HOME</title>
+    <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        #header {
+            background: #fc783b;
+            color: white;
+            text-align: left;
+            font-family: "Gill Sans", sans-serif;
+            padding:1px; /*taille du bandeau */ 
+            font-size: 30px; /*taille de la police */
+            padding-top: -20px; 
+        }
+     
+        #map {
+            flex-grow: 1;
+            height: calc(100vh - 200px);
+        }
+    </style>
+</head>
+<body>
+    
+    <!--Configurer le titre et bandeau du démonstrateur--> 
+    <div id="header">
+        <div id="header">
+            <img src="images/logo.png" width="150" height="200"> <!-- width = longueur/ height = hauteur-->
+         </div>        
+    </div> 
+    <div id="map"></div>
+
+        <!--Configurer le menu pour les fonds de carte--> 
+        <div id="menu">
+            <label for="style-selector" class="white-text"><strong>Choix du fond de carte</strong>    </label>
+            <select id="style-selector">
+                <option class="green-text" value="https://openmaptiles.geo.data.gouv.fr/styles/positron/style.json">Light </option>
+                <option class="green-text" value="https://openmaptiles.geo.data.gouv.fr/styles/dark-matter/style.json">Dark</option>
+            </select>
+        </div>
+
+        <!--Configurer le menu pour les types de cartes--> 
+
+        <div id="menu3">
+            <label class="white-text"><strong>Choix des critères</strong></label>
+            <div id="style-selector">
+                <input type="checkbox"/>
+            <label for="RoutesCB">Bibilothèque</label>
+            </div>
+        </div>
+        
+
+    <!-- Lien vers fichier JavaScript -->
+    <script src="js.js"></script>
+</body>
+</html>
