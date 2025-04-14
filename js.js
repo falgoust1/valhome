@@ -9,11 +9,6 @@ var map = new maplibregl.Map({
     attributionControl: false  
 });
 
-// Changement de fond de carte via le sélecteur
-document.getElementById('style-selector').addEventListener('change', function () {
-    map.setStyle(this.value);
-    map.once('style.load', addLayers);
-});
 
 // Ajout des contrôles (attribution, échelle, navigation)
 map.addControl(new maplibregl.AttributionControl({
@@ -52,54 +47,107 @@ map.on('load', addLayers);
 // Fonction de mise à jour du style en fonction du critère sélectionné
 function updateStyle() {
     var collegeActive = document.getElementById('collegeCheckbox').checked;
-    var ecoleActive = document.getElementById('ecoleCheckbox').checked;
+    var ecoleActive   = document.getElementById('ecoleCheckbox').checked;
+    var lyceeActive   = document.getElementById('lyceeCheckbox').checked;
+    var supermarcheActive = document.getElementById('supermarcheCheckbox').checked;
 
-    if (ecoleActive) {
-        // Appliquer le style basé sur la colonne score_ecole_5
+    if (lyceeActive) {
+        // Style basé sur le score des lycées (score_lycee_15)
         map.setPaintProperty('Communes', 'fill-color', [
             'match',
-            ['get', 'score_ecole_5'],
-            1, '#ff0000',   // Rouge pour score 1
-            2, '#ff7f00',   // Orange pour score 2
-            3, '#ffff00',   // Jaune pour score 3
-            4, '#7fff00',   // Vert clair pour score 4
-            5, '#00ff00',   // Vert pour score 5
-            '#cccccc'       // Par défaut
-        ]);
-        map.setPaintProperty('Communes', 'fill-opacity', 0.7);
-    } else if (collegeActive) {
-        // Appliquer le style basé sur la colonne score_college_10
-        map.setPaintProperty('Communes', 'fill-color', [
-            'match',
-            ['get', 'score_college_10'],
-            1, '#ff0000',   // Rouge pour score 1
-            2, '#ff9900',   // Orange pour score 2
-            3, '#ffff00',   // Jaune pour score 3
-            4, '#99ff00',   // Vert clair pour score 4
-            5, '#00ff00',   // Vert pour score 5
+            ['get', 'score_lycee_15'],
+            1, '#d7191c',   // Rouge pour score 1
+            2, '#fdae61',   // Orange pour score 2
+            3, '#ffffc0',   // Jaune pour score 3
+            4, '#a6d96a',   // Vert clair pour score 4
+            5, '#1a9641',   // Vert pour score 5
             '#cccccc'
         ]);
         map.setPaintProperty('Communes', 'fill-opacity', 0.7);
+    } else if (ecoleActive) {
+        // Style basé sur le score des écoles (score_ecole_5)
+        map.setPaintProperty('Communes', 'fill-color', [
+            'match',
+            ['get', 'score_ecole_5'],
+            1, '#d7191c',
+            2, '#fdae61',
+            3, '#ffffc0',
+            4, '#a6d96a',
+            5, '#1a9641',
+            '#cccccc'
+        ]);
+        map.setPaintProperty('Communes', 'fill-opacity', 0.7);
+
+
+    } else if (collegeActive) {
+        // Style basé sur le score des collèges (score_college_10)
+        map.setPaintProperty('Communes', 'fill-color', [
+            'match',
+            ['get', 'score_college_10'],
+            1, '#d7191c',
+            2, '#fdae61',
+            3, '#ffffc0',
+            4, '#a6d96a',
+            5, '#1a9641',
+            '#cccccc'
+        ]);
+        map.setPaintProperty('Communes', 'fill-opacity', 0.7);
+    
+    } else if (supermarcheActive) {
+        // Style basé sur le score des collèges (score_college_10)
+        map.setPaintProperty('Communes', 'fill-color', [
+            'match',
+            ['get', 'score_supermarche_10'],
+            1, '#d7191c',
+            2, '#fdae61',
+            3, '#ffffc0',
+            4, '#a6d96a',
+            5, '#1a9641',
+            '#cccccc'
+        ]);
+        map.setPaintProperty('Communes', 'fill-opacity', 0.7);
+
     } else {
-        // Réinitialiser au style par défaut
+        // Réinitialisation au style par défaut
         map.setPaintProperty('Communes', 'fill-color', '#4da8b7');
         map.setPaintProperty('Communes', 'fill-opacity', 0.1);
     }
 }
 
-// Gestion des cases à cocher exclusives et mise à jour du style
+// Gestion des cases à cocher exclusives
 document.getElementById('collegeCheckbox').addEventListener('change', function(e) {
-  if (e.target.checked) {
-    // Décoche la case "École" si elle est cochée
-    document.getElementById('ecoleCheckbox').checked = false;
-  }
-  updateStyle();
+    if (e.target.checked) {
+        document.getElementById('ecoleCheckbox').checked = false;
+        document.getElementById('lyceeCheckbox').checked = false;
+        document.getElementById('supermarcheCheckbox').checked = false;
+    }
+    updateStyle();
 });
 
 document.getElementById('ecoleCheckbox').addEventListener('change', function(e) {
-  if (e.target.checked) {
-    // Décoche la case "Collège" si elle est cochée
-    document.getElementById('collegeCheckbox').checked = false;
-  }
-  updateStyle();
+    if (e.target.checked) {
+        document.getElementById('collegeCheckbox').checked = false;
+        document.getElementById('lyceeCheckbox').checked = false;
+        document.getElementById('supermarcheCheckbox').checked = false;
+    }
+    updateStyle();
+});
+
+document.getElementById('lyceeCheckbox').addEventListener('change', function(e) {
+    if (e.target.checked) {
+        document.getElementById('collegeCheckbox').checked = false;
+        document.getElementById('ecoleCheckbox').checked = false;
+        document.getElementById('supermarcheCheckbox').checked = false;
+    }
+    updateStyle();
+});
+
+document.getElementById('supermarcheCheckbox').addEventListener('change', function(e) {
+    if (e.target.checked) {
+        document.getElementById('collegeCheckbox').checked = false;
+        document.getElementById('ecoleCheckbox').checked = false;
+        document.getElementById('lyceeCheckbox').checked = false;
+        
+    }
+    updateStyle();
 });
