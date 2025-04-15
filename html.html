@@ -21,33 +21,65 @@
 
   <!-- Menu pour les critères -->
   <div id="menu3">
-    <label class="white-text"><strong>Choix des critères</strong></label>
-
-
-    <div>
-        <input type="checkbox" id="ecoleCheckbox"/>
-        <label for="ecoleCheckbox">École</label>
-    </div>
-
-    <div>
-      <input type="checkbox" id="collegeCheckbox"/>
-      <label for="collegeCheckbox">Collège</label>
-    </div>
-
-    <div>
-        <input type="checkbox" id="lyceeCheckbox"/>
-        <label for="lyceeCheckbox">Lycée</label>
-    </div>
-
-    <div>
-        <input type="checkbox" id="supermarcheCheckbox"/>
-        <label for="supermarcheCheckbox">Supermarchés</label>
-    </div>
-   
-  </div>
-  <div id="legend" style="position: absolute; bottom: 20px; left: 20px; background: white; padding: 10px; border-radius: 4px; font-size: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
-    <p>Aucune sélection</p>
-  </div>
+    <details open>
+      <summary><strong>🏠 Prix immobilier</strong></summary>
+      <div>
+        <input type="checkbox" id="DVFCheckbox" checked/>
+        <label for="DVFCheckbox">DVF</label>
+      </div>
+    </details>
+    
+    <details open>
+      <summary><strong>🧭 Accessibilité aux services</strong></summary>
+    
+      <details open>
+        <summary><strong>🎓 Éducation</strong></summary>
+        <div>
+          <input type="checkbox" id="ecoleCheckbox"/>
+          <label for="ecoleCheckbox">École</label>
+        </div>
+        <div>
+          <input type="checkbox" id="collegeCheckbox"/>
+          <label for="collegeCheckbox">Collège</label>
+        </div>
+        <div>
+          <input type="checkbox" id="lyceeCheckbox"/>
+          <label for="lyceeCheckbox">Lycée</label>
+        </div>
+      </details>
+    
+      <details open>
+        <summary><strong>🛒 Services alimentaires</strong></summary>
+        <div>
+          <input type="checkbox" id="supermarcheCheckbox"/>
+          <label for="supermarcheCheckbox">Supermarchés</label>
+        </div>
+        <div>
+          <input type="checkbox" id="boulangerieCheckbox"/>
+          <label for="boulangerieCheckbox">Boulangeries</label>
+        </div>
+      </details>
+    
+      <details open>
+        <summary><strong>🩺 Santé</strong></summary>
+        <div>
+          <input type="checkbox" id="medecinCheckbox"/>
+          <label for="medecinCheckbox">Médecins</label>
+        </div>
+      </details>
+    
+    </details>
+    <details open >
+      <summary><strong>🌳 Environnement</strong></summary>
+      <div>
+        <input type="checkbox" id="eolienneCheckbox"/>
+        <label for="eolienneCheckbox">Éoliennes</label>
+      </div>
+      <div>
+        <input type="checkbox" id="routeCheckbox"/>
+        <label for="routeCheckbox">Route > 70 km/h</label>
+      </div>
+    </details>
   
 <script src="geostats.min.js"></script>
 <script src="js.js"></script>

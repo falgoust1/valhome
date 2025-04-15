@@ -16,6 +16,7 @@ var map = new maplibregl.Map({
     attributionControl: false // Attribution personnalisée ajoutée après
 });
 
+
 // Ajout des contrôles sur la carte
 map.addControl(new maplibregl.AttributionControl({
     customAttribution: '© <a href="https://esigat.wordpress.com/" target="_blank">Master SIGAT</a> | © <a>ValHOME</a>'
@@ -54,11 +55,48 @@ function addLayers() {
             // Transition fluide des couleurs lors des changements
             map.setPaintProperty('Communes', 'fill-color-transition', { duration: 500, delay: 0 });
             map.setPaintProperty('Communes', 'fill-opacity-transition', { duration: 500, delay: 0 });
+
+            // 👉 Appliquer le style dès le chargement avec le critère DVF pré-coché
+            updateStyle();
         });
 }
 
 // Chargement initial de la couche
 map.on('load', addLayers);
+
+// Initialisation d'une popup MapLibre
+let popup = new maplibregl.Popup({
+    closeButton: false,
+    closeOnClick: false
+});
+
+// Affichage d'une popup au survol d'une commune
+map.on('mousemove', 'Communes', function (e) {
+    if (e.features.length > 0) {
+        const feature = e.features[0];
+
+        // Récupération des propriétés
+        const communeName = feature.properties.nom_com || 'Nom inconnu';
+        const medianPrice = feature.properties.prixm2_median ?? 'N/A';
+        const transCount = feature.properties.prixm2_count ?? 'N/A';
+
+        // Contenu HTML de la popup
+        const html = `
+            <div style="font-weight:bold; margin-bottom:5px;">${communeName}</div>
+            <div>Prix médian au m² : <strong>${medianPrice} €</strong></div>
+            <div>Nombre de transactions : <strong>${transCount}</strong></div>
+        `;
+
+        popup.setLngLat(e.lngLat)
+            .setHTML(html)
+            .addTo(map);
+    }
+});
+
+// Suppression de la popup lorsque le curseur quitte la couche
+map.on('mouseleave', 'Communes', function () {
+    popup.remove();
+});
 
 // === Fonction principale : mise à jour du style de la couche selon les critères sélectionnés ===
 function updateStyle() {
@@ -69,6 +107,11 @@ function updateStyle() {
     if (document.getElementById('ecoleCheckbox').checked) selectedCriteria.push('score_ecole_5');
     if (document.getElementById('lyceeCheckbox').checked) selectedCriteria.push('score_lycee_15');
     if (document.getElementById('supermarcheCheckbox').checked) selectedCriteria.push('score_supermarche_10');
+    if (document.getElementById('DVFCheckbox').checked) selectedCriteria.push('ScoreDVF');
+    if (document.getElementById('boulangerieCheckbox').checked) selectedCriteria.push('score_boulangerie_5');
+    if (document.getElementById('medecinCheckbox').checked) selectedCriteria.push('score_medecin_15');
+    if (document.getElementById('eolienneCheckbox').checked) selectedCriteria.push('score_eolienne_2km');
+    if (document.getElementById('routeCheckbox').checked) selectedCriteria.push('score_route_300');
 
     if (!communesData) return; // Sécurité : si données pas encore chargées
 
@@ -154,6 +197,11 @@ function updateStyle() {
     }
 }
 
+
+
+
+
+
 // === Fonction pour mettre à jour la légende de la carte ===
 function updateLegend(breaks = [], label = '') {
     const legend = document.getElementById('legend');
@@ -175,6 +223,6 @@ function updateLegend(breaks = [], label = '') {
 }
 
 // === Activation de la mise à jour du style lors du changement de critères ===
-['collegeCheckbox', 'ecoleCheckbox', 'lyceeCheckbox', 'supermarcheCheckbox'].forEach(id => {
+['DVFCheckbox','collegeCheckbox', 'ecoleCheckbox', 'lyceeCheckbox', 'supermarcheCheckbox', 'boulangerieCheckbox', 'medecinCheckbox', 'eolienneCheckbox', 'routeCheckbox'].forEach(id => {
     document.getElementById(id).addEventListener('change', updateStyle);
 });

@@ -38,7 +38,7 @@ body, html {
         width: 20%;
         bottom: 0px;
         right: 0px;
-        background: #ffa566;
+        background: #5a5451;
         font-family: "Gill Sans", sans-serif;
         padding: 15px;  
         border-radius: 0px;   
@@ -47,7 +47,33 @@ body, html {
         flex-direction: column; /* Assure que le contenu est empilé verticalement */
     }
 
-#menu3 label { /*mettre "label" permet de changer uniquement un élément du menu et pas toute la sélection*/
-    display: block; 
-    margin-bottom: 15px; 
-}
+    #menu3 details {
+        margin-bottom: 10px;
+        background: #5a5451;
+        color: white;
+        border: none;
+    }
+    
+    #menu3 summary {
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 5px 0;
+    }
+    
+    #menu3 details[open] > summary {
+        border-bottom: 1px solid white;
+    }
+    
+    #menu3 details details {
+        margin-left: 15px; /* indentation des sous-menus */
+        background: none;
+    }
+    
+    #menu3 details details summary {
+        font-size: 15px;
+    }
+    
+    #menu3 input[type="checkbox"] {
+        margin-right: 5px;
+    }
