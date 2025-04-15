@@ -1,154 +1,479 @@
-// Configuration de la carte avec MapLibre
-var map = new maplibregl.Map({
-    container: 'map',  
-    style: 'https://openmaptiles.geo.data.gouv.fr/styles/positron/style.json',  
-    center: [-1.4354488035208413, 48.14548776478422],  
-    zoom: 8.5,  
-    pitch: 0,   
-    bearing: 0, 
-    attributionControl: false  
-});
-
-
-
-// Ajout des contrôles (attribution, échelle, navigation)
-map.addControl(new maplibregl.AttributionControl({
-    customAttribution: '© <a href="https://esigat.wordpress.com/" target="_blank">Master SIGAT</a> | © <a>ValHOME</a>'
-}), 'bottom-left');
-
-map.addControl(new maplibregl.ScaleControl({
-    maxWidth: 120,
-    unit: 'metric'
-}));
-
-map.addControl(new maplibregl.NavigationControl(), 'top-left');
-
-// Fonction qui ajoute la couche des communes depuis le GeoJSON hébergé sur GitHub
-function addLayers() {
-    map.addSource('Communes', {
-        type: 'geojson',
-        data: 'https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/main/communes.geojson'
+    // Configuration de la carte avec MapLibre
+    var map = new maplibregl.Map({
+        container: 'map',  
+        style: 'https://openmaptiles.geo.data.gouv.fr/styles/positron/style.json',  
+        center: [-1.4354488035208413, 48.14548776478422],  
+        zoom: 8.5,  
+        pitch: 0,   
+        bearing: 0, 
+        attributionControl: false  
     });
-  
-    map.addLayer({
-        id: 'Communes',
-        type: 'fill',
-        source: 'Communes',
-        paint: {
-            'fill-color': '#4da8b7',       // Couleur par défaut
-            'fill-opacity': 0.1,           // Opacité par défaut
-            'fill-outline-color': '#000000'
+
+    // Ajout des contrôles (attribution, échelle, navigation)
+    map.addControl(new maplibregl.AttributionControl({
+        customAttribution: '© <a href="https://esigat.wordpress.com/" target="_blank">Master SIGAT</a> | © <a>ValHOME</a>'
+    }), 'bottom-left');
+
+    map.addControl(new maplibregl.ScaleControl({
+        maxWidth: 120,
+        unit: 'metric'
+    }));
+
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
+
+    // Variable globale qui contiendra la variable sélectionnée pour l'affichage (pourcentage ou DVF)
+    var selectedVariable = null;
+
+    // Création du popup réutilisable avec une classe pour le style personnalisé
+    var popup = new maplibregl.Popup({
+        closeButton: false,
+        closeOnClick: false,
+        className: 'custom-popup' // pensez à définir ce style dans votre CSS
+    });
+
+    // Fonction qui ajoute la couche des communes depuis le GeoJSON hébergé sur GitHub
+    function addLayers() {
+        map.addSource('Communes', {
+            type: 'geojson',
+            data: 'https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/main/communes.geojson'
+        });
+    
+        map.addLayer({
+            id: 'Communes',
+            type: 'fill',
+            source: 'Communes',
+            paint: {
+                'fill-color': '#4da8b7',       // Couleur par défaut
+                'fill-opacity': 0.1,           // Opacité par défaut
+                'fill-outline-color': '#000000'
+            }
+        });
+    }
+
+    // Chargement de la couche dès que la carte est prête
+    map.on('load', addLayers);
+
+    // Fonction de mise à jour du style en fonction du critère sélectionné
+    function updateStyle() {
+        var collegeActive = document.getElementById('collegeCheckbox').checked;
+        var ecoleActive = document.getElementById('ecoleCheckbox').checked;
+        var lyceeActive = document.getElementById('lyceeCheckbox').checked;
+        var supermarcheActive = document.getElementById('supermarcheCheckbox').checked;
+        var DVFActive = document.getElementById('DVFCheckbox').checked;
+        var boulangerieActive = document.getElementById('boulangerieCheckbox').checked;
+        var medecinActive = document.getElementById('medecinCheckbox').checked;
+        var eolienneActive = document.getElementById('eolienneCheckbox').checked;
+        var routeActive = document.getElementById('routeCheckbox').checked;
+
+        // Réinitialiser la variable sélectionnée
+        selectedVariable = null;
+
+        if (lyceeActive) {
+            // Style basé sur le score des lycées (score_lycee_15)
+            map.setPaintProperty('Communes', 'fill-color', [
+                'match',
+                ['get', 'score_lycee_15'],
+                1, '#d7191c',
+                2, '#fdae61',
+                3, '#ffffc0',
+                4, '#a6d96a',
+                5, '#1a9641',
+                '#cccccc'
+            ]);
+            map.setPaintProperty('Communes', 'fill-opacity', 0.7);
+            selectedVariable = 'pourc_lycee';
+        } else if (ecoleActive) {
+            // Style basé sur le score des écoles (score_ecole_5)
+            map.setPaintProperty('Communes', 'fill-color', [
+                'match',
+                ['get', 'score_ecole_5'],
+                1, '#d7191c',
+                2, '#fdae61',
+                3, '#ffffc0',
+                4, '#a6d96a',
+                5, '#1a9641',
+                '#cccccc'
+            ]);
+            map.setPaintProperty('Communes', 'fill-opacity', 0.7);
+            selectedVariable = 'pourc_ecole';
+        } else if (collegeActive) {
+            // Style basé sur le score des collèges (score_college_10)
+            map.setPaintProperty('Communes', 'fill-color', [
+                'match',
+                ['get', 'score_college_10'],
+                1, '#d7191c',
+                2, '#fdae61',
+                3, '#ffffc0',
+                4, '#a6d96a',
+                5, '#1a9641',
+                '#cccccc'
+            ]);
+            map.setPaintProperty('Communes', 'fill-opacity', 0.7);
+            selectedVariable = 'pourc_college';
+        } else if (supermarcheActive) {
+            // Style basé sur le score des supermarchés (score_supermarche_10)
+            map.setPaintProperty('Communes', 'fill-color', [
+                'match',
+                ['get', 'score_supermarche_10'],
+                1, '#d7191c',
+                2, '#fdae61',
+                3, '#ffffc0',
+                4, '#a6d96a',
+                5, '#1a9641',
+                '#cccccc'
+            ]);
+            map.setPaintProperty('Communes', 'fill-opacity', 0.7);
+            selectedVariable = 'pourc_supermarche';
+        } else if (DVFActive) {
+            // Style pour les DVF (utilisation de la propriété ScoreDVF)
+            map.setPaintProperty('Communes', 'fill-color', [
+                'match',
+                ['get', 'ScoreDVF'],
+                1, '#d7191c',
+                2, '#fdae61',
+                3, '#ffffc0',
+                4, '#a6d96a',
+                5, '#1a9641',
+                '#cccccc'
+            ]);
+            map.setPaintProperty('Communes', 'fill-opacity', 0.7);
+            selectedVariable = 'ScoreDVF';
+        } else if (boulangerieActive) {
+            // Style basé sur le score des boulangeries (score_boulangerie_5)
+            map.setPaintProperty('Communes', 'fill-color', [
+                'match',
+                ['get', 'score_boulangerie_5'],
+                1, '#d7191c',
+                2, '#fdae61',
+                3, '#ffffc0',
+                4, '#a6d96a',
+                5, '#1a9641',
+                '#cccccc'
+            ]);
+            map.setPaintProperty('Communes', 'fill-opacity', 0.7);
+            selectedVariable = 'pourc_boulangerie';
+        } else if (medecinActive) {
+            // Style basé sur le score des médecins (score_medecin_10)
+            map.setPaintProperty('Communes', 'fill-color', [
+                'match',
+                ['get', 'score_medecin_10'],
+                1, '#d7191c',
+                2, '#fdae61',
+                3, '#ffffc0',
+                4, '#a6d96a',
+                5, '#1a9641',
+                '#cccccc'
+            ]);
+            map.setPaintProperty('Communes', 'fill-opacity', 0.7);
+            selectedVariable = 'pourc_medecin_10';
+        } else if (eolienneActive) {
+            // Style basé sur le score des éoliennes (score_eolienne_2km)
+            map.setPaintProperty('Communes', 'fill-color', [
+                'match',
+                ['get', 'score_eolienne_2km'],
+                1, '#d7191c',
+                2, '#fdae61',
+                3, '#ffffc0',
+                4, '#a6d96a',
+                5, '#1a9641',
+                '#cccccc'
+            ]);
+            map.setPaintProperty('Communes', 'fill-opacity', 0.7);
+            selectedVariable = 'pourc_eolienne_2km';
+        } else if (routeActive) {
+            // Style basé sur le score des routes (score_route_300)
+            map.setPaintProperty('Communes', 'fill-color', [
+                'match',
+                ['get', 'score_route_300'],
+                1, '#d7191c',
+                2, '#fdae61',
+                3, '#ffffc0',
+                4, '#a6d96a',
+                5, '#1a9641',
+                '#cccccc'
+            ]);
+            map.setPaintProperty('Communes', 'fill-opacity', 0.7);
+            selectedVariable = 'pourc_route';
+        } else {
+            // Style par défaut
+            map.setPaintProperty('Communes', 'fill-color', '#4da8b7');
+            map.setPaintProperty('Communes', 'fill-opacity', 0.1);
+        }
+    }
+
+    // Gestion des cases à cocher exclusives
+    function uncheckAllExcept(exceptId) {
+        var checkboxes = ['collegeCheckbox', 'ecoleCheckbox', 'lyceeCheckbox', 'supermarcheCheckbox', 'DVFCheckbox', 'boulangerieCheckbox', 'medecinCheckbox', 'eolienneCheckbox', 'routeCheckbox'];
+        checkboxes.forEach(function(id) {
+            if (id !== exceptId) {
+                document.getElementById(id).checked = false;
+            }
+        });
+    }
+
+    document.getElementById('collegeCheckbox').addEventListener('change', function(e) {
+        if (e.target.checked) {
+            uncheckAllExcept('collegeCheckbox');
+        }
+        updateStyle();
+    });
+
+    document.getElementById('ecoleCheckbox').addEventListener('change', function(e) {
+        if (e.target.checked) {
+            uncheckAllExcept('ecoleCheckbox');
+        }
+        updateStyle();
+    });
+
+    document.getElementById('lyceeCheckbox').addEventListener('change', function(e) {
+        if (e.target.checked) {
+            uncheckAllExcept('lyceeCheckbox');
+        }
+        updateStyle();
+    });
+
+    document.getElementById('supermarcheCheckbox').addEventListener('change', function(e) {
+        if (e.target.checked) {
+            uncheckAllExcept('supermarcheCheckbox');
+        }
+        updateStyle();
+    });
+
+    document.getElementById('DVFCheckbox').addEventListener('change', function(e) {
+        if (e.target.checked) {
+            uncheckAllExcept('DVFCheckbox');
+        }
+        updateStyle();
+    });
+
+    document.getElementById('boulangerieCheckbox').addEventListener('change', function(e) {
+        if (e.target.checked) {
+            uncheckAllExcept('boulangerieCheckbox');
+        }
+        updateStyle();
+    });
+
+    document.getElementById('medecinCheckbox').addEventListener('change', function(e) {
+        if (e.target.checked) {
+            uncheckAllExcept('medecinCheckbox');
+        }
+        updateStyle();
+    });
+
+    document.getElementById('eolienneCheckbox').addEventListener('change', function(e) {
+        if (e.target.checked) {
+            uncheckAllExcept('eolienneCheckbox');
+        }
+        updateStyle();
+    });
+
+    document.getElementById('routeCheckbox').addEventListener('change', function(e) {
+        if (e.target.checked) {
+            uncheckAllExcept('routeCheckbox');
+        }
+        updateStyle();
+    });
+
+    // Ajout du comportement hover sur la couche des communes
+    map.on('mousemove', 'Communes', function(e) {
+        if (e.features.length > 0) {
+            var feature = e.features[0];
+            var communeName = feature.properties.nom_com;
+            var html = '';
+            
+            // Cas particulier pour DVF
+            if (selectedVariable === 'ScoreDVF') {
+                var medianPrice = feature.properties.prixm2_median ? feature.properties.prixm2_median : 'N/A';
+                var transCount = feature.properties.prixm2_count ? feature.properties.prixm2_count : 'N/A';
+                html = '<div style="font-weight:bold;margin-bottom:5px;">' + communeName + '</div>' +
+                    '<div>Le prix médian au m² : ' + medianPrice + '</div>' +
+                    '<div>Nombre de transactions immobilières : ' + transCount + '</div>';
+            } else {
+                // Pour les autres catégories, on récupère la valeur stockée dans selectedVariable
+                var value = (selectedVariable && feature.properties[selectedVariable] !== undefined) ? feature.properties[selectedVariable] : 'N/A';
+                var messageDetail = '';
+                if (selectedVariable === 'pourc_ecole') {
+                    messageDetail = "Part de la commune située à moins de 5 min d'une école";
+                } else if (selectedVariable === 'pourc_college') {
+                    messageDetail = "Part de la commune située à moins de 10 min d'un collège";
+                } else if (selectedVariable === 'pourc_lycee') {
+                    messageDetail = "Part de la commune située à moins de 15 min d'un lycée";
+                } else if (selectedVariable === 'pourc_supermarche') {
+                    messageDetail = "Part de la commune située à moins de 10 min d'un supermarché";
+                } else if (selectedVariable === 'pourc_boulangerie') {
+                    messageDetail = "Part de la commune située à moins de 5 min d'une boulangerie";
+                } else if (selectedVariable === 'pourc_medecin_10') {
+                    messageDetail = "Part de la commune située à moins de 10 min d'un médecin";
+                } else if (selectedVariable === 'pourc_eolienne_2km') {
+                    messageDetail = "Part de la commune située à moins de 2km d'une éolienne";
+                } else if (selectedVariable === 'pourc_route') {
+                    messageDetail = "Part de la commune située à moins 300m d'une route à plus de 70km/h";
+                }
+                html = '<div style="font-weight:bold;margin-bottom:5px;">' + communeName + '</div>' +
+                    (selectedVariable ? '<div>' + messageDetail + ' : ' + value + '</div>' : '');
+            }
+            popup.setLngLat(e.lngLat)
+                .setHTML(html)
+                .addTo(map);
         }
     });
-}
 
-// Chargement de la couche dès que la carte est prête
-map.on('load', addLayers);
-
-// Fonction de mise à jour du style en fonction du critère sélectionné
-function updateStyle() {
-    var collegeActive = document.getElementById('collegeCheckbox').checked;
-    var ecoleActive   = document.getElementById('ecoleCheckbox').checked;
-    var lyceeActive   = document.getElementById('lyceeCheckbox').checked;
-    var supermarcheActive = document.getElementById('supermarcheCheckbox').checked;
-
-    if (lyceeActive) {
-        // Style basé sur le score des lycées (score_lycee_15)
-        map.setPaintProperty('Communes', 'fill-color', [
-            'match',
-            ['get', 'score_lycee_15'],
-            1, '#d7191c',   // Rouge pour score 1
-            2, '#fdae61',   // Orange pour score 2
-            3, '#ffffc0',   // Jaune pour score 3
-            4, '#a6d96a',   // Vert clair pour score 4
-            5, '#1a9641',   // Vert pour score 5
-            '#cccccc'
-        ]);
-        map.setPaintProperty('Communes', 'fill-opacity', 0.7);
-    } else if (ecoleActive) {
-        // Style basé sur le score des écoles (score_ecole_5)
-        map.setPaintProperty('Communes', 'fill-color', [
-            'match',
-            ['get', 'score_ecole_5'],
-            1, '#d7191c',
-            2, '#fdae61',
-            3, '#ffffc0',
-            4, '#a6d96a',
-            5, '#1a9641',
-            '#cccccc'
-        ]);
-        map.setPaintProperty('Communes', 'fill-opacity', 0.7);
+    // Supprimer le popup lorsque le curseur quitte la couche "Communes"
+    map.on('mouseleave', 'Communes', function() {
+        popup.remove();
+    });
 
 
-    } else if (collegeActive) {
-        // Style basé sur le score des collèges (score_college_10)
-        map.setPaintProperty('Communes', 'fill-color', [
-            'match',
-            ['get', 'score_college_10'],
-            1, '#d7191c',
-            2, '#fdae61',
-            3, '#ffffc0',
-            4, '#a6d96a',
-            5, '#1a9641',
-            '#cccccc'
-        ]);
-        map.setPaintProperty('Communes', 'fill-opacity', 0.7);
-    
-    } else if (supermarcheActive) {
-        // Style basé sur le score des collèges (score_college_10)
-        map.setPaintProperty('Communes', 'fill-color', [
-            'match',
-            ['get', 'score_supermarche_10'],
-            1, '#d7191c',
-            2, '#fdae61',
-            3, '#ffffc0',
-            4, '#a6d96a',
-            5, '#1a9641',
-            '#cccccc'
-        ]);
-        map.setPaintProperty('Communes', 'fill-opacity', 0.7);
 
-    } else {
-        // Réinitialisation au style par défaut
-        map.setPaintProperty('Communes', 'fill-color', '#4da8b7');
-        map.setPaintProperty('Communes', 'fill-opacity', 0.1);
+// Fonction générique pour basculer l'affichage d'une couche
+function toggleRawLayer(checkboxId, sourceId, layerId, dataUrl, layerDefinition) {
+    var checkbox = document.getElementById(checkboxId);
+    checkbox.addEventListener('change', function(e) {
+      if (e.target.checked) {
+        // Ajout de la source et de la couche si non déjà présentes
+        if (!map.getSource(sourceId)) {
+          map.addSource(sourceId, {
+            type: 'geojson',
+            data: dataUrl
+          });
+        }
+        if (!map.getLayer(layerId)) {
+          var def = Object.assign({ id: layerId, source: sourceId }, layerDefinition);
+          map.addLayer(def);
+        }
+      } else {
+        // Retrait de la couche et de la source
+        if (map.getLayer(layerId)) {
+          map.removeLayer(layerId);
+        }
+        if (map.getSource(sourceId)) {
+          map.removeSource(sourceId);
+        }
+      }
+    });
+  }
+  
+  // Par exemple, pour la couche des éoliennes :
+  toggleRawLayer(
+    'layerEolienne',            // ID du checkbox dans le menuLayers
+    'eolienneSource',           // ID de la source (unique)
+    'eolienneLayer',            // ID de la couche
+    'https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/donn%C3%A9es/point_eolienne.geojson', // URL du GeoJSON des éoliennes
+    {
+      type: 'circle',           // Affichage sous forme de cercles
+      paint: {
+        'circle-radius': 6,
+        'circle-color': '#ff0000'
+      }
     }
-}
-
-// Gestion des cases à cocher exclusives
-document.getElementById('collegeCheckbox').addEventListener('change', function(e) {
-    if (e.target.checked) {
-        document.getElementById('ecoleCheckbox').checked = false;
-        document.getElementById('lyceeCheckbox').checked = false;
-        document.getElementById('supermarcheCheckbox').checked = false;
+  );
+  
+  // Pour la couche des médecins :
+  toggleRawLayer(
+    'layerMedecin',
+    'medecinSource',
+    'medecinLayer',
+    'https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/donn%C3%A9es/point_medecin.geojson',
+    {
+      type: 'circle',
+      paint: {
+        'circle-radius': 6,
+        'circle-color': '#00ff00'
+      }
     }
-    updateStyle();
-});
-
-document.getElementById('ecoleCheckbox').addEventListener('change', function(e) {
-    if (e.target.checked) {
-        document.getElementById('collegeCheckbox').checked = false;
-        document.getElementById('lyceeCheckbox').checked = false;
-        document.getElementById('supermarcheCheckbox').checked = false;
+  );
+  
+  // Pour la couche des boulangeries :
+  toggleRawLayer(
+    'layerBoulangerie',
+    'boulangerieSource',
+    'boulangerieLayer',
+    'https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/donn%C3%A9es/boulangerie.geojson',
+    {
+      type: 'circle',
+      paint: {
+        'circle-radius': 6,
+        'circle-color': '#0000ff'
+      }
     }
-    updateStyle();
-});
+  );
 
-document.getElementById('lyceeCheckbox').addEventListener('change', function(e) {
-    if (e.target.checked) {
-        document.getElementById('collegeCheckbox').checked = false;
-        document.getElementById('ecoleCheckbox').checked = false;
-        document.getElementById('supermarcheCheckbox').checked = false;
+  // Pour la couche des collèges :
+toggleRawLayer(
+    'layerCollege',                   // ID du checkbox à placer dans le menuLayers
+    'collegeSource',                  // ID de la source
+    'collegeLayer',                   // ID de la couche
+    'https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/donn%C3%A9es/college_point.geojson',
+    {
+      type: 'circle',
+      paint: {
+        'circle-radius': 6,
+        'circle-color': '#ff6600'
+      }
     }
-    updateStyle();
-});
+  );
+  
+  // Pour la couche des lycées :
+  toggleRawLayer(
+    'layerLycee',
+    'lyceeSource',
+    'lyceeLayer',
+    'https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/donn%C3%A9es/lycee_point.geojson',
+    {
+      type: 'circle',
+      paint: {
+        'circle-radius': 6,
+        'circle-color': '#00ccff'
+      }
+    }
+  );
+  
+  // Pour la couche des écoles :
+  toggleRawLayer(
+    'layerEcole',
+    'ecoleSource',
+    'ecoleLayer',
+    'https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/donn%C3%A9es/ecole_point.geojson',
+    {
+      type: 'circle',
+      paint: {
+        'circle-radius': 6,
+        'circle-color': '#ff00ff'
+      }
+    }
+  );
+  
+  // Pour la couche des supermarchés :
+  toggleRawLayer(
+    'layerSupermarche',
+    'supermarcheSource',
+    'supermarcheLayer',
+    'https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/donn%C3%A9es/supermarche.geojson',
+    {
+      type: 'circle',
+      paint: {
+        'circle-radius': 6,
+        'circle-color': '#00ff00'
+      }
+    }
+  );
+  
+  // Pour la couche DVF :
+  toggleRawLayer(
+    'layerDVF',
+    'dvfSource',
+    'dvfLayer',
+    'https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/donn%C3%A9es/DVF.geojson',
+    {
+      // Ici, si la DVF représente des polygones, vous pouvez utiliser par exemple un remplissage (fill) :
+      type: 'fill',
+      paint: {
+        'fill-color': '#ffff00',
+        'fill-opacity': 0.5
+      }
+    }
+  );
+  
 
-document.getElementById('supermarcheCheckbox').addEventListener('change', function(e) {
-    if (e.target.checked) {
-        document.getElementById('collegeCheckbox').checked = false;
-        document.getElementById('ecoleCheckbox').checked = false;
-        document.getElementById('lyceeCheckbox').checked = false;
-        
-    }
-    updateStyle();
-});
+ 
+  

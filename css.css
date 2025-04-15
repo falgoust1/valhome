@@ -38,7 +38,7 @@ body, html {
         width: 20%;
         bottom: 0px;
         right: 0px;
-        background: #ffa566;
+        background: #2f3030;
         font-family: "Gill Sans", sans-serif;
         padding: 15px;  
         border-radius: 0px;   
@@ -51,4 +51,30 @@ body, html {
 #menu3 label { /*mettre "label" permet de changer uniquement un élément du menu et pas toute la sélection*/
     display: block; 
     margin-bottom: 15px; 
+}
+
+
+#menuLayers {
+    position: absolute;
+    top: 10%;
+    left: 0;
+    width: 10%;
+    bottom: 0;
+    background: #2f3030;
+    font-family: "Gill Sans", sans-serif;
+    padding: 15px;
+    border-radius: 0;
+    color: white;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+#menuLayers label {
+    display: block;
+    margin-bottom: 15px;
+}
+
+.maplibregl-ctrl-top-left {
+    top: 10px !important;
+    left: 200px;
 }
