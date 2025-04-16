@@ -7,124 +7,133 @@
   <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
   <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
   <link rel="stylesheet" href="css.css">
-  <script src="https://unpkg.com/simple-statistics@7.0.4/dist/simple-statistics.min.js"></script>
-
 </head>
 <body>
   <!-- Bandeau du démonstrateur -->
   <div id="header">
     <img src="https://raw.githubusercontent.com/falgoust1/valhome/Emmanuel/image.png" alt="Logo">
-
   </div>
   
-  <div id="map"></div>
-
- 
-
-  <!-- Menu pour les critères -->
-  <div id="menu3">
-    <label class="white-text"><strong>Choix des critères</strong></label>
-
-
-    <div>
-        <input type="checkbox" id="ecoleCheckbox"/>
-        <label for="ecoleCheckbox">École</label>
+  <!-- Conteneur de la carte -->
+  <div id="map">
+    <div id="infoBox" style="position: absolute; top:10px; left:10px; background: rgba(255,255,255,0.8); padding:10px; border-radius:4px; z-index:1000; max-width:250px; font-family: Arial, sans-serif; font-size:14px;">
+      <!-- Les infos sur la commune s'afficheront ici -->
     </div>
-
-    <div>
-      <input type="checkbox" id="collegeCheckbox"/>
-      <label for="collegeCheckbox">Collège</label>
-    </div>
-
-    <div>
-        <input type="checkbox" id="lyceeCheckbox"/>
-        <label for="lyceeCheckbox">Lycée</label>
-    </div>
-
-    <div>
-        <input type="checkbox" id="supermarcheCheckbox"/>
-        <label for="supermarcheCheckbox">Supermarchés</label>
-    </div>
-
-    <div>
-        <input type="checkbox" id="DVFCheckbox"/>
-        <label for="DVFCheckbox">DVF</label>
-    </div>
-
-    <div>
-        <input type="checkbox" id="boulangerieCheckbox"/>
-        <label for="boulangerieCheckbox">Boulangeries</label>
-    </div>
-
-    <div>
-        <input type="checkbox" id="medecinCheckbox"/>
-        <label for="medecinCheckbox">Medecins</label>
-    </div>
-   
-    <div>
-        <input type="checkbox" id="eolienneCheckbox"/>
-        <label for="eolienneCheckbox">Eoliennes</label>
-    </div>
-
-    <div>
-        <input type="checkbox" id="routeCheckbox"/>
-        <label for="routeCheckbox">Route roulant à plus de 70 km/h</label>
-    </div>
-
-  </div>
-
-
-  <!-- Menu de contrôle des couches brutes (Raw Data Layers) -->
-<div id="menuLayers">
-    <label class="white-text"><strong>Couches données brutes</strong></label>
-  
-    <div>
-      <input type="checkbox" id="layerEolienne"/>
-      <label for="layerEolienne">Éoliennes</label>
-    </div>
-  
-    <div>
-      <input type="checkbox" id="layerMedecin"/>
-      <label for="layerMedecin">Médecins</label>
-    </div>
-  
-    <div>
-      <input type="checkbox" id="layerBoulangerie"/>
-      <label for="layerBoulangerie">Boulangeries</label>
-    </div>
-
-    <div>
-        <input type="checkbox" id="layerEcole"/>
-        <label for="layerEcole">Écoles</label>
-    </div>
-
-    <div>
-        <input type="checkbox" id="layerCollege"/>
-        <label for="layerCollege">Collèges</label>
-      </div>
-      
-      <div>
-        <input type="checkbox" id="layerLycee"/>
-        <label for="layerLycee">Lycées</label>
-      </div>
-      
-     
-      
-      <div>
-        <input type="checkbox" id="layerSupermarche"/>
-        <label for="layerSupermarche">Supermarchés</label>
-      </div>
-      
-      <div>
-        <input type="checkbox" id="layerDVF"/>
-        <label for="layerDVF">DVF</label>
-      </div>
-      
-  
-    <!-- Ajoutez d'autres couches si nécessaire -->
   </div>
   
-
+  <!-- Premier menu : gestion des critères (couches communes) -->
+  <div id="dropdownMenu">
+    <!-- Panneau de contenu masqué par défaut -->
+    <div id="menuContent">
+      <details close>
+        <summary><strong>🏠 Prix immobilier</strong></summary>
+        <div>
+          <input type="checkbox" id="DVFCheckbox" checked />
+          <label for="DVFCheckbox">DVF</label>
+        </div>
+      </details>
+      <details close>
+        <summary><strong>🧭 Accessibilité aux services</strong></summary>
+        <details close>
+          <summary><strong>🎓 Éducation</strong></summary>
+          <div>
+            <input type="checkbox" id="ecoleCheckbox" />
+            <label for="ecoleCheckbox">École</label>
+          </div>
+          <div>
+            <input type="checkbox" id="collegeCheckbox" />
+            <label for="collegeCheckbox">Collège</label>
+          </div>
+          <div>
+            <input type="checkbox" id="lyceeCheckbox" />
+            <label for="lyceeCheckbox">Lycée</label>
+          </div>
+        </details>
+        <details close>
+          <summary><strong>🛒 Services alimentaires</strong></summary>
+          <div>
+            <input type="checkbox" id="supermarcheCheckbox" />
+            <label for="supermarcheCheckbox">Supermarchés</label>
+          </div>
+          <div>
+            <input type="checkbox" id="boulangerieCheckbox" />
+            <label for="boulangerieCheckbox">Boulangeries</label>
+          </div>
+        </details>
+        <details close>
+          <summary><strong>🩺 Santé</strong></summary>
+          <div>
+            <input type="checkbox" id="medecinCheckbox" />
+            <label for="medecinCheckbox">Médecins</label>
+          </div>
+        </details>
+      </details>
+      <details close>
+        <summary><strong>🌳 Environnement</strong></summary>
+        <div>
+          <input type="checkbox" id="eolienneCheckbox" />
+          <label for="eolienneCheckbox">Éoliennes</label>
+        </div>
+        <div>
+          <input type="checkbox" id="routeCheckbox" />
+          <label for="routeCheckbox">Route > 70 km/h</label>
+        </div>
+      </details>
+    </div>
+    <!-- Bouton toggle pour le premier menu -->
+    <div id="toggleButton">
+      <img src="https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/gurwan/engrenage.svg" alt="Toggle Menu">
+    </div>
+  </div>
+  
+  <!-- Second menu : gestion des couches (exemple : École 35) -->
+  <div id="dropdownLayersMenu">
+    <!-- Panneau de contenu masqué par défaut -->
+    <div id="layersMenuContent">
+      <label>
+        <input type="checkbox" id="ecole35Checkbox">
+        Écoles 
+      </label>
+      <br>
+      <label>
+          <input type="checkbox" id="college35Checkbox">
+          Collèges 
+      </label>
+      <br>
+      <label>
+          <input type="checkbox" id="lycee35Checkbox">
+          Lycées
+      </label>
+      <br>
+      <label>
+          <input type="checkbox" id="supermarche35Checkbox">
+          Supermarchés
+      </label>
+      <br>
+      <label>
+          <input type="checkbox" id="boulangerie35Checkbox">
+          Boulangeries
+      </label>
+      <br>
+      <label>
+          <input type="checkbox" id="medecin35Checkbox">
+          Médecins
+      </label>
+      <br>
+      <label>
+          <input type="checkbox" id="eolienne35Checkbox">
+          Eoliennes
+      </label>
+      <!-- Vous pouvez ajouter d'autres cases pour d'autres couches si besoin -->
+    </div>
+    <!-- Bouton toggle pour le second menu -->
+    <div id="layersToggleButton">
+      <!-- Exemple d'icône Layers, à modifier si besoin -->
+      <img src="https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/gurwan/position.svg" alt="Toggle Layers">
+    </div>
+  </div>
+  
+  <script src="geostats.min.js"></script>
   <script src="js.js"></script>
 </body>
 </html>
