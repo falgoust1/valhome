@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Poppins', sans-serif;
+}
+
+#header {
+    display: flex;
+    height: 10%;
+    background: #3a3533;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#header img {
+    max-height: 90px;
+    margin-left: 10px;
+    margin-top: 5px;   
+}
+
+#map {
+    flex-grow: 1;
+    height: calc(100vh - 200px);
+}
+
+#infoBox {
+    left: 10px;
+}
+
+/* --- Nouveau menu dropdown --- */
+#dropdownMenu {
+  position: absolute;
+  top: 15%;
+  right: 50px;
+  display: flex;
+  flex-direction: row-reverse; /* Le bouton toggle toujours à droite */
+  align-items: flex-start;
+  z-index: 1000;
+}
+
+/* Bouton toggle visible en permanence */
+#toggleButton {
+    width: 70px;
+    height: 70px;
+    background: #5a5451;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 5px;
+    overflow: hidden; /* Pour éviter tout débordement */
+ }
+ 
+ #toggleButton img {
+     width: 150%;    /* L'image occupe 80% de la largeur du conteneur */
+     height: auto;  /* La hauteur s'adapte automatiquement pour préserver les proportions */
+     object-fit: contain;
+     margin: 0;
+     display: block;
+ }
+ 
+
+/* Panneau de contenu masqué par défaut */
+#menuContent {
+   display: none;
+   background: #5a5451;
+   color: white;
+   border-radius: 8px;
+   padding: 10px;
+   margin-right: 5px;
+   /* Dimensions minimales mais adaptables en fonction du contenu */
+   min-width: 100px;
+   min-height: 300px;
+   overflow-y: auto;
+}
+
+/* Affichage du menu lorsqu'ouvert (la classe "open" est ajoutée) */
+#dropdownMenu.open #menuContent {
+   display: block;
+}
+
+/* Style pour les details à l'intérieur du menu (nous reprenons l'existant) */
+#menuContent details {
+    margin-bottom: 10px;
+    background: #5a5451;
+    color: white;
+    border: none;
+}
+
+#menuContent summary {
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px 0;
+}
+
+#menuContent details[open] > summary {
+    border-bottom: 1px solid white;
+}
+
+#menuContent details details {
+    margin-left: 15px;
+    background: none;
+}
+
+#menuContent details details summary {
+    font-size: 15px;
+}
+
+#menuContent input[type="checkbox"] {
+    margin-right: 5px;
+}

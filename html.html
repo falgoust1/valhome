@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Val'HOME</title>
+  <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+  <!-- Bandeau du démonstrateur -->
+  <div id="header">
+    <img src="https://raw.githubusercontent.com/falgoust1/valhome/Emmanuel/image.png" alt="Logo">
+  </div>
+  
+  <div id="map">
+    <div id="infoBox" style="
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 4px;
+      z-index: 1000;
+      max-width: 250px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    ">
+      <!-- Les infos sur la commune s'afficheront ici -->
+    </div>
+  </div>
+
+  <!-- Nouveau menu déroulant -->
+  <div id="dropdownMenu">
+      <!-- Panneau de contenu : ce bloc contiendra les critères sous forme de détails -->
+      <div id="menuContent">
+          <details open>
+            <summary><strong> Prix immobilier</strong></summary>
+            <div>
+              <input type="checkbox" id="DVFCheckbox" checked/>
+              <label for="DVFCheckbox">DVF</label>
+            </div>
+          </details>
+          
+          <details open>
+            <summary><strong> Accessibilité aux services</strong></summary>
+          
+            <details open>
+              <summary><strong> Éducation</strong></summary>
+              <div>
+                <input type="checkbox" id="ecoleCheckbox"/>
+                <label for="ecoleCheckbox">École</label>
+              </div>
+              <div>
+                <input type="checkbox" id="collegeCheckbox"/>
+                <label for="collegeCheckbox">Collège</label>
+              </div>
+              <div>
+                <input type="checkbox" id="lyceeCheckbox"/>
+                <label for="lyceeCheckbox">Lycée</label>
+              </div>
+            </details>
+          
+            <details open>
+              <summary><strong> Services alimentaires</strong></summary>
+              <div>
+                <input type="checkbox" id="supermarcheCheckbox"/>
+                <label for="supermarcheCheckbox">Supermarchés</label>
+              </div>
+              <div>
+                <input type="checkbox" id="boulangerieCheckbox"/>
+                <label for="boulangerieCheckbox">Boulangeries</label>
+              </div>
+            </details>
+          
+            <details open>
+              <summary><strong> Santé</strong></summary>
+              <div>
+                <input type="checkbox" id="medecinCheckbox"/>
+                <label for="medecinCheckbox">Médecins</label>
+              </div>
+            </details>
+          
+          </details>
+          <details open>
+            <summary><strong> Environnement</strong></summary>
+            <div>
+              <input type="checkbox" id="eolienneCheckbox"/>
+              <label for="eolienneCheckbox">Éoliennes</label>
+            </div>
+            <div>
+              <input type="checkbox" id="routeCheckbox"/>
+              <label for="routeCheckbox">Route > 70 km/h</label>
+            </div>
+          </details>
+      </div>
+      <!-- Bouton toggle qui contient le logo, toujours visible -->
+      <div id="toggleButton">
+          <img src="https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/gurwan/engrenage.svg" alt="Toggle Menu">
+      </div>
+  </div>
+  
+  <script src="geostats.min.js"></script>
+  <script src="js.js"></script>
+</body>
+</html>
