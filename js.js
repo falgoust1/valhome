@@ -109,7 +109,7 @@ function updateStyle() {
     if (document.getElementById('supermarcheCheckbox').checked) selectedCriteria.push('score_supermarche_10');
     if (document.getElementById('DVFCheckbox').checked) selectedCriteria.push('ScoreDVF');
     if (document.getElementById('boulangerieCheckbox').checked) selectedCriteria.push('score_boulangerie_5');
-    if (document.getElementById('medecinCheckbox').checked) selectedCriteria.push('score_medecin_15');
+    if (document.getElementById('medecinCheckbox').checked) selectedCriteria.push('score_medecin_10');
     if (document.getElementById('eolienneCheckbox').checked) selectedCriteria.push('score_eolienne_2km');
     if (document.getElementById('routeCheckbox').checked) selectedCriteria.push('score_route_300');
 
