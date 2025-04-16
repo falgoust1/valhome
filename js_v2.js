@@ -748,7 +748,7 @@ attachPopup('boulangerieLayer', function(feature) {
 });
 
 attachPopup('medecinLayer', function(feature) {
-  return '<div style="font-weight:bold;margin-bottom:5px;">' + feature.properties.dresse+'</div>' 
+  return '<div style="font-weight:bold;margin-bottom:5px;">' + feature.properties.Adresse+'</div>' 
 });
 
 // --- Gestion globale du clic sur la carte pour fermer le popup ---
