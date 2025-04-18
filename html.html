@@ -8,6 +8,7 @@
   <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
   <link rel="stylesheet" href="css.css">
   <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 <body>
@@ -16,17 +17,24 @@
     <img src="https://raw.githubusercontent.com/falgoust1/valhome/Emmanuel/image.png" alt="Logo">
   </div>
   
-  <!-- Conteneur de la carte -->
   <div id="map">
-    <div id="infoBox" style="position: absolute; top:10px; left:10px; background: rgba(255,255,255,0.8); padding:10px; border-radius:4px; z-index:1000; max-width:250px; font-family: Arial, sans-serif; font-size:14px;">
-      <!-- Les infos sur la commune s'afficheront ici -->
+    <div id="infoBox" style="position: absolute; top:10px; left:10px; background: rgba(255,255,255,0.8); padding:10px; border-radius:4px; z-index:1000; max-width:250px; font-family: Arial, sans-serif; font-size:14px;"></div>
+
+    <div id="radarContainer">
+      <div id="radarTitle">Résumé des critères</div>
+      <canvas id="radarChart"></canvas>
     </div>
   </div>
   
   <!-- Premier menu : gestion des critères (couches communes) -->
   <div id="dropdownMenu">
     <!-- Panneau de contenu masqué par défaut -->
-    <div id="menuContent">
+      <div id="menuContent">
+        
+        <div style="margin-bottom: 10px;">
+          <input type="checkbox" id="clearAllCriteria">
+          <label for="clearAllCriteria"><strong>Décocher tous les critères</strong></label>
+        </div>
       <details close>
         <summary><strong>🏠 Prix immobilier</strong></summary>
         <div>

@@ -107,7 +107,7 @@ map.on('mousemove', 'Communes', e => {
   document.getElementById('infoBox').innerHTML =
     `<div style="font-weight:bold;">${p.nom_com}</div>` +
     `<div>Habitants: <strong>${p.population}</strong></div>` +
-    `<div>Prix méd m²: <strong>${p.prixm2_median || 'N/A'}€</strong></div>` +
+    `<div>Prix médian au m²: <strong>${p.prixm2_median || 'N/A'}€</strong></div>` +
     `<div>Nombre de ventes immobilières : <strong>${p.prixm2_count || 'N/A'}</strong></div>`;
 });
 map.on('mouseleave', 'Communes', () => {
@@ -317,3 +317,88 @@ function updateLegend(breaks = [], label = '') {
     legend.innerHTML += `<i style="background:${cols[i]};width:15px;height:15px;display:inline-block;"></i> ${b.toFixed(2)} – ${breaks[i+1].toFixed(2)}<br>`;
   });
 }
+
+
+let radarChart = null;
+
+function updateRadarChart(properties) {
+  const selectedProps = getSelectedProps(communeCriteriaMap);
+  if (selectedProps.length === 0) {
+    document.getElementById('radarContainer').style.display = 'none';
+    return;
+  }
+
+  const labels = selectedProps.map(prop => {
+    return Object.keys(communeCriteriaMap).find(key => communeCriteriaMap[key] === prop)
+                  .replace('Checkbox', '')
+                  .replace('_', ' ')
+                  .toUpperCase();
+  });
+
+  const data = selectedProps.map(prop => +properties[prop] || 1);
+
+  document.getElementById('radarContainer').style.display = 'block';
+
+  const ctx = document.getElementById('radarChart').getContext('2d');
+
+  if (radarChart) radarChart.destroy();
+
+  radarChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: properties.nom_com,
+        data: data,
+        fill: true,
+        backgroundColor: 'rgba(77, 168, 183, 0.4)',
+        borderColor: '#4da8b7',
+        pointBackgroundColor: '#4da8b7'
+      }]
+    },
+    options: {
+      scales: { r: { min: 0, max: 5, ticks: { stepSize: 1 } } },
+      plugins: { legend: { display: false } }
+    }
+  });
+}
+
+map.on('mousemove', 'Communes', e => {
+  if (!e.features.length) return;
+  const props = e.features[0].properties;
+  updateRadarChart(props);
+});
+
+map.on('mouseleave', 'Communes', () => {
+  document.getElementById('radarContainer').style.display = 'none';
+});
+
+[...Object.keys(communeCriteriaMap)].forEach(id => {
+  document.getElementById(id).addEventListener('change', () => {
+    const hoveredFeature = map.queryRenderedFeatures({ layers: ['Communes'] })[0];
+    if (hoveredFeature) updateRadarChart(hoveredFeature.properties);
+  });
+});
+
+
+document.getElementById('clearAllCriteria').addEventListener('change', function() {
+  const shouldClear = this.checked;
+  const allCriteriaCheckboxes = Object.keys(communeCriteriaMap);
+
+  allCriteriaCheckboxes.forEach(id => {
+    document.getElementById(id).checked = !shouldClear; // Décocher si la case globale est cochée
+  });
+
+  // Forcer la mise à jour immédiate du style de la carte et du radar
+  if (map.getLayer('Sections')) updateSectionsStyle();
+  else updateCommunesStyle();
+
+  const hoveredFeature = map.queryRenderedFeatures({ layers: ['Communes'] })[0];
+  if (hoveredFeature) updateRadarChart(hoveredFeature.properties);
+  else document.getElementById('radarContainer').style.display = 'none';
+
+  // Désactive automatiquement la case après utilisation
+  if (shouldClear) {
+    setTimeout(() => { this.checked = false; }, 500);
+  }
+});
