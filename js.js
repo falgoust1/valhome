@@ -108,7 +108,7 @@ map.on('mousemove', 'Communes', e => {
     `<div style="font-weight:bold;">${p.nom_com}</div>` +
     `<div>Habitants: <strong>${p.population}</strong></div>` +
     `<div>Prix méd m²: <strong>${p.prixm2_median || 'N/A'}€</strong></div>` +
-    `<div>Transac: <strong>${p.prixm2_count || 'N/A'}</strong></div>`;
+    `<div>Nombre de ventes immobilières : <strong>${p.prixm2_count || 'N/A'}</strong></div>`;
 });
 map.on('mouseleave', 'Communes', () => {
   document.getElementById('infoBox').innerHTML = '';
@@ -232,6 +232,8 @@ function loadLayer(layerId, url) {
           html = `<div style="font-weight:bold;">${p.name}</div>`;
         } else if (layerId === 'medecin35') {
           html = `<div style="font-weight:bold;">Adresse : ${p.Adresse}</div>`;
+        } else if (layerId === 'boulangerie35') {
+          html = `<div style="font-weight:bold;"> ${p.name}</div>`;
         } else {
           html = `<div style="font-weight:bold;">${p.nom_etablissement}</div>` +
                  `<div>Statut : ${p.statut_public_prive}</div>`;
