@@ -10,6 +10,10 @@ body, html {
   font-family: 'Poppins', sans-serif;
 }
 
+#AttributionControl{
+  right: 100px;
+}
+
 #header {
   display: flex;
   height: 10%;
