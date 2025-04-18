@@ -7,6 +7,8 @@
   <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
   <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
   <link rel="stylesheet" href="css.css">
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+
 </head>
 <body>
   <!-- Bandeau du démonstrateur -->
@@ -38,33 +40,33 @@
           <summary><strong>🎓 Éducation</strong></summary>
           <div>
             <input type="checkbox" id="ecoleCheckbox" />
-            <label for="ecoleCheckbox">École</label>
+            <label for="ecoleCheckbox">École à moins de 5 min</label>
           </div>
           <div>
             <input type="checkbox" id="collegeCheckbox" />
-            <label for="collegeCheckbox">Collège</label>
+            <label for="collegeCheckbox">Collège à moins de 10 min</label>
           </div>
           <div>
             <input type="checkbox" id="lyceeCheckbox" />
-            <label for="lyceeCheckbox">Lycée</label>
+            <label for="lyceeCheckbox">Lycée à moins de 15 min</label>
           </div>
         </details>
         <details close>
           <summary><strong>🛒 Services alimentaires</strong></summary>
           <div>
             <input type="checkbox" id="supermarcheCheckbox" />
-            <label for="supermarcheCheckbox">Supermarchés</label>
+            <label for="supermarcheCheckbox">Supermarchés à moins de 10 min</label>
           </div>
           <div>
             <input type="checkbox" id="boulangerieCheckbox" />
-            <label for="boulangerieCheckbox">Boulangeries</label>
+            <label for="boulangerieCheckbox">Boulangeries à moins de 5 min</label>
           </div>
         </details>
         <details close>
           <summary><strong>🩺 Santé</strong></summary>
           <div>
             <input type="checkbox" id="medecinCheckbox" />
-            <label for="medecinCheckbox">Médecins</label>
+            <label for="medecinCheckbox">Médecins à moins de 10 min</label>
           </div>
         </details>
       </details>
@@ -72,11 +74,11 @@
         <summary><strong>🌳 Environnement</strong></summary>
         <div>
           <input type="checkbox" id="eolienneCheckbox" />
-          <label for="eolienneCheckbox">Éoliennes</label>
+          <label for="eolienneCheckbox">Éoliennes à moins de 2km</label>
         </div>
         <div>
           <input type="checkbox" id="routeCheckbox" />
-          <label for="routeCheckbox">Route > 70 km/h</label>
+          <label for="routeCheckbox">Route > 70 km/h à moins de 300m</label>
         </div>
       </details>
     </div>
