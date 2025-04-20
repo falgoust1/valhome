@@ -14,17 +14,28 @@
 <body>
   <!-- Bandeau du démonstrateur -->
   <div id="header">
-    <img src="https://raw.githubusercontent.com/falgoust1/valhome/Emmanuel/image.png" alt="Logo">
+    <a id="header-logo" href="/">
+      <img src="https://raw.githubusercontent.com/falgoust1/valhome/Emmanuel/image.png" alt="Logo">
+    </a>
+    <div id="header-links-default">
+      <a href="">Accueil</a>
+      <a href="">Carte</a>
+      <a href="https://github.com/falgoust1/valhome">Github</a>
+      <button id="help-button">Se connecter</button>
+    </div>
   </div>
+    
   
   <div id="map">
-    <div id="infoBox" style="position: absolute; top:10px; left:10px; background: rgba(255,255,255,0.8); padding:10px; border-radius:4px; z-index:1000; max-width:250px; font-family: Arial, sans-serif; font-size:14px;"></div>
+    <div id="infoBox" ></div>
 
     <div id="radarContainer">
       <div id="radarTitle">Score de chaque critère pour l'entité sélectionnée</div>
-      <div id="radarexplication">Plus le score est élevé mieux c'est !</div>
+      <div id="radarexplication">Plus le score est élevé mieux c'est !</div>
+      <div id="radarLocation" style="text-align:center; font-style:italic;"></div>
       <canvas id="radarChart"></canvas>
     </div>
+    
   </div>
   
   <!-- Premier menu : gestion des critères (couches communes) -->
@@ -35,6 +46,10 @@
         <div style="margin-bottom: 10px;">
           <input type="checkbox" id="clearAllCriteria">
           <label for="clearAllCriteria"><strong>Décocher tous les critères</strong></label>
+        </div>
+        <div style="margin-bottom: 10px;">
+         <input type="checkbox" id="checkAllCriteria">
+         <label for="checkAllCriteria"><strong>Cocher tous les critères</strong></label>
         </div>
       <details close>
         <summary><strong>🏠 Prix immobilier</strong></summary>

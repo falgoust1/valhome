@@ -309,6 +309,15 @@ layersToggleButton.addEventListener('click', e => {
   dropdownLayersMenu.classList.toggle('open');
 });
 
+
+dropdownMenu.addEventListener('mouseleave', () => {
+  dropdownMenu.classList.remove('open');
+});
+dropdownLayersMenu.addEventListener('mouseleave', () => {
+  dropdownLayersMenu.classList.remove('open');
+});
+
+
 // --- Mise à jour de la légende ---
 function updateLegend(breaks = [], label = '') {
   const legend = document.getElementById('legend');
@@ -325,6 +334,49 @@ function updateLegend(breaks = [], label = '') {
   });
 }
 
+
+const chartOptions = {
+  scales: {
+    r: {
+      // grille circulaire
+      grid:   { color: 'rgba(255,255,255,0.3)' },
+      // lignes radialles
+      angleLines: { color: 'rgba(255,255,255,0.3)' },
+      // labels extérieurs (ex. ÉCOLE, MED)
+      pointLabels: {
+        color: '#ffffff',
+        font: { family: 'Poppins', size: 12 }
+      },
+      // graduation
+      ticks: {
+        stepSize: 1,
+        color: '#ffffff',
+        backdropColor: 'transparent'  // plus de carré derrière
+      },
+      min: 0,
+      max: 5
+    }
+  },
+  elements: {
+    line: {
+      borderColor: '#ffffff',   // couleur des segments
+      borderWidth: 2
+    },
+    responsive: true,
+    maintainAspectRatio: false,   // ← autorise le canvas à remplir son parent
+    layout: { padding: 0 },
+    point: {
+      backgroundColor: '#ffffff', // couleur des points
+      borderColor: '#4da8b7',
+      borderWidth: 1,
+      radius: 3
+    }
+  },
+  plugins: {
+    legend: { display: false }
+  }
+}
+
 // --- Radar pour Communes ---
 let radarChart = null;
 function updateRadarChart(properties) {
@@ -333,23 +385,46 @@ function updateRadarChart(properties) {
     document.getElementById('radarContainer').style.display = 'none';
     return;
   }
+
+  // ← Mise à jour du titre juste ici
+  document.getElementById('radarLocation').innerText = properties.nom_com;
+
   const labels = selectedProps.map(prop =>
     Object.keys(communeCriteriaMap).find(key => communeCriteriaMap[key] === prop)
       .replace('Checkbox','').replace('_',' ').toUpperCase()
   );
   const data = selectedProps.map(prop => +properties[prop] || 1);
+
   document.getElementById('radarContainer').style.display = 'block';
   const ctx = document.getElementById('radarChart').getContext('2d');
   if (radarChart) radarChart.destroy();
   radarChart = new Chart(ctx, {
     type: 'radar',
     data: { labels, datasets: [{ 
-      label: properties.nom_com, data, fill: true,
-      backgroundColor: 'rgba(77, 168, 183, 0.4)',
-      borderColor: '#4da8b7', pointBackgroundColor: '#4da8b7'
+      label: properties.nom_com,
+      data, fill: true,
+      backgroundColor: 'rgba(77,168,183,0.4)',  // reste bleu clair
+      borderColor: '#ffffff',
+      pointBackgroundColor: '#ffffff'
     }]},
-    options: { scales: { r: { min:0, max:5, ticks:{ stepSize:1 } }}, plugins:{ legend:{ display:false } } }
+    options: {
+      scales: {
+        r: { 
+          grid: { color: 'rgba(255,255,255,0.3)' },
+          angleLines: { color: 'rgba(255,255,255,0.3)' },
+          pointLabels: { color: '#ffffff', font:{ family:'Poppins', size:12 } },
+          ticks: { stepSize:1, color:'#ffffff', backdropColor:'transparent' },
+          min:0, max:5
+        }
+      },
+      elements: {
+        line: { borderColor:'#ffffff', borderWidth:2 },
+        point:{ backgroundColor:'#ffffff', borderColor:'#4da8b7', borderWidth:1, radius:3 }
+      },
+      plugins:{ legend:{ display:false } }
+    }
   });
+  
 }
 
 // --- Radar pour Sections ---
@@ -359,23 +434,46 @@ function updateRadarChartSections(properties) {
     document.getElementById('radarContainer').style.display = 'none';
     return;
   }
+
+  // ← Mise à jour du titre pour la section
+  document.getElementById('radarLocation').innerText = properties.id 
+    ? `Section ${properties.id}` 
+    : 'Section';
+
   const labels = selectedProps.map(prop =>
     Object.keys(sectionCriteriaMap).find(key => sectionCriteriaMap[key] === prop)
       .replace('Checkbox','').replace('_',' ').toUpperCase()
   );
   const data = selectedProps.map(prop => +properties[prop] || 1);
+
   document.getElementById('radarContainer').style.display = 'block';
   const ctx = document.getElementById('radarChart').getContext('2d');
   if (radarChart) radarChart.destroy();
   radarChart = new Chart(ctx, {
     type: 'radar',
     data: { labels, datasets: [{ 
-      label: properties.id ? 'Section ' + properties.id : 'Section', 
+      label: properties.nom_com,
       data, fill: true,
-      backgroundColor: 'rgba(77, 168, 183, 0.4)',
-      borderColor: '#4da8b7', pointBackgroundColor: '#4da8b7'
+      backgroundColor: 'rgba(77,168,183,0.4)',  // reste bleu clair
+      borderColor: '#ffffff',
+      pointBackgroundColor: '#ffffff'
     }]},
-    options: { scales: { r: { min:0, max:5, ticks:{ stepSize:1 } }}, plugins:{ legend:{ display:false } } }
+    options: {
+      scales: {
+        r: { 
+          grid: { color: 'rgba(255,255,255,0.3)' },
+          angleLines: { color: 'rgba(255,255,255,0.3)' },
+          pointLabels: { color: '#ffffff', font:{ family:'Poppins', size:12 } },
+          ticks: { stepSize:1, color:'#ffffff', backdropColor:'transparent' },
+          min:0, max:5
+        }
+      },
+      elements: {
+        line: { borderColor:'#ffffff', borderWidth:2 },
+        point:{ backgroundColor:'#ffffff', borderColor:'#4da8b7', borderWidth:1, radius:3 }
+      },
+      plugins:{ legend:{ display:false } }
+    }
   });
 }
 
@@ -384,7 +482,7 @@ map.on('mousemove', 'Sections', e => {
   if (!e.features.length) return;
   const p = e.features[0].properties;
   document.getElementById('infoBox').innerHTML =
-    `<div style="font-weight:bold;">Parcelle: ${p.id}</div>` +
+    `<div style="font-weight:bold;"> Section cadastrale: ${p.id}</div>` +
     `<div>Prix médian au m²: <strong>${p.prixm2_median || 'N/A'}€</strong></div>` +
     `<div>Transactions: <strong>${p.prixm2_count || 'N/A'}</strong></div>`;
   updateRadarChartSections(p);
@@ -442,4 +540,61 @@ map.on('zoomend', () => {
     map.setLayoutProperty('Communes', 'visibility', 'visible');
     updateCommunesStyle();
   }
+});
+
+
+// Bouton “Décocher tous les critères”
+document.getElementById('clearAllCriteria').addEventListener('change', function() {
+  // Décoche toutes les cases des deux maps
+  Object.keys(communeCriteriaMap).forEach(id => {
+    document.getElementById(id).checked = false;
+  });
+  Object.keys(sectionCriteriaMap).forEach(id => {
+    document.getElementById(id).checked = false;
+  });
+
+  // Mets à jour la couche active
+  if (map.getLayer('Sections')) {
+    updateSectionsStyle();
+  } else {
+    updateCommunesStyle();
+  }
+
+  // Optionnel : masque le radar si plus aucun critère sélectionné
+  document.getElementById('radarContainer').style.display = 'none';
+
+  // Réinitialise la checkbox pour pouvoir la recliquer
+  this.checked = false;
+});
+
+
+// Bouton “Cocher tous les critères”
+document.getElementById('checkAllCriteria').addEventListener('change', function() {
+  // Coche toutes les cases de critères (communes + sections)
+  Object.keys(communeCriteriaMap).forEach(id => {
+    document.getElementById(id).checked = true;
+  });
+  Object.keys(sectionCriteriaMap).forEach(id => {
+    document.getElementById(id).checked = true;
+  });
+
+  // Mets à jour la couche active
+  if (map.getLayer('Sections')) {
+    updateSectionsStyle();
+  } else {
+    updateCommunesStyle();
+  }
+
+  // Affiche le radar si tu veux
+  const feat = map.getLayer('Sections')
+    ? map.queryRenderedFeatures({ layers: ['Sections'] })[0]?.properties
+    : map.queryRenderedFeatures({ layers: ['Communes'] })[0]?.properties;
+  if (feat) {
+    map.getLayer('Sections') 
+      ? updateRadarChartSections(feat) 
+      : updateRadarChart(feat);
+  }
+
+  // Réinitialise la checkbox pour pouvoir la recliquer ultérieurement
+  this.checked = false;
 });

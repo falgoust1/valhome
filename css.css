@@ -12,11 +12,30 @@ body, html {
 }
 
 #header {
+  position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 103;
+    background-color: rgb(35, 36, 48);
+    height: 65px;
+}
+
+#header-logo {
   display: flex;
-  height: 10%;
-  background: #3a3533;
-  justify-content: space-between;
-  align-items: center;
+  align-items:center;
+  gap: 0px;
+  white-space: nowrap;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  margin-left: 0px;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: inherit;
+  font-size: 36px;
 }
 
 #header img {
@@ -25,14 +44,78 @@ body, html {
   margin-top: 5px;   
 }
 
+#header-links-default {
+  display: flex;
+  align-items: center;
+  margin-right: 26px;
+}
+
+#header-links-default a{
+  display: flex;
+  align-items: center;
+  text-decoration-line: inherit;
+  font-size: 16px;
+  height: 20px;
+  position: relative;
+  color: rgb(255, 255, 255);
+  margin-right: 24px;
+  background-color: transparent;
+}
+
+#help-button {
+  color: rgb(255, 255, 255);
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  border-top-style: solid;
+  border-right-style: solid;
+  border-bottom-style: solid;
+  border-left-style: solid;
+  border-top-color: rgb(158, 162, 174);
+  border-right-color: rgb(158, 162, 174);
+  border-bottom-color: rgb(158, 162, 174);
+  border-left-color: rgb(158, 162, 174);
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 12px;
+  padding-top: 6px;
+  padding-right: 18px;
+  padding-left: 18px;
+  line-height: 18px;
+  background-color: transparent;
+  margin-left: 42px;
+  cursor: pointer;
+  overflow: visible;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+  text-align: center;
+  align-items: center;
+}
+
 #map {
   flex-grow: 1;
   height: calc(100vh - 200px);
 }
 
+/* --- InfoBox --- */
 #infoBox {
-  left: 10px;
+  position: absolute;
+  margin-top: 100px;
+  left: 20px;
+  background-color: #5a5451;
+  color: #f1ecec;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px #5a5451;
+  max-width: 260px;
+  font-size: 14px;
+  z-index: 1100;
 }
+
 
 /* --- Menu des communes --- */
 #dropdownMenu {
@@ -192,31 +275,48 @@ body, html {
   background: white;
 }
 
+/* --- Radar Container --- */
 #radarContainer {
   position: absolute;
   bottom: 30px;
-  right: 10px;
-  width: 20%;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 10px;
+  right: 20px;
+  width: auto;
+  height: auto;
+  background-color: #5a5451 !important;
+  color: #ffffff;
   padding: 10px;
-  display: none;
-  z-index: 1000;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  z-index: 1100;
+  text-align: center;
+  align-items: center;
 }
+
+#radarChart {
+  display: block;
+  margin: 0 auto;
+  width: 90%;    /* ajuste ce pourcentage pour agrandir/rétrécir le radar */
+  height: auto;  /* laisse Chart.js gérer la hauteur */
+}
+
 
 #radarTitle {
   text-align: center;
-  
-  margin-bottom: 5px;
-  font-family: 'Poppins', sans-serif;
-  font-size: 20px;
+  font-size: 18px;
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 
-#radarexplication{
+#radarexplication,
+#radarLocation {
   text-align: center;
-  
-  margin-bottom: 45px;
-  font-family: 'Poppins', sans-serif;
   font-size: 13px;
+  margin-bottom: 25px;
+  color: #e0e0e0;
+}
 
+/* --- Checkbox styling inside menus --- */
+#menuContent input[type="checkbox"],
+#layersMenuContent input[type="checkbox"] {
+  accent-color: #5a5451;
 }
