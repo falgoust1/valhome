@@ -1,3 +1,4 @@
+/* css.css */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 body, html {
@@ -9,10 +10,6 @@ body, html {
   flex-direction: column;
   font-family: 'Poppins', sans-serif;
 }
-
-
-
-
 
 #header {
   display: flex;
@@ -43,7 +40,7 @@ body, html {
   top: 15%;
   right: 50px;
   display: flex;
-  flex-direction: row-reverse; /* le bouton toggle à droite */
+  flex-direction: row-reverse;
   align-items: flex-start;
   z-index: 1100;
 }
@@ -66,7 +63,6 @@ body, html {
   width: 150%;
   height: auto;
   object-fit: contain;
-  margin: 0;
   display: block;
 }
 
@@ -80,7 +76,6 @@ body, html {
   min-width: 200px;
   min-height: 300px;
   overflow-y: auto;
-  
 }
 
 #dropdownMenu.open #menuContent {
@@ -90,7 +85,7 @@ body, html {
 /* --- Menu des couches --- */
 #dropdownLayersMenu {
   position: absolute;
-  top: calc(15% + 100px); /* Ajuster l'espacement pour éviter le chevauchement */
+  top: calc(15% + 100px);
   right: 50px;
   display: flex;
   flex-direction: row-reverse;
@@ -116,7 +111,6 @@ body, html {
   width: 150%;
   height: auto;
   object-fit: contain;
-  margin: 0;
   display: block;
 }
 
@@ -136,7 +130,7 @@ body, html {
   display: block;
 }
 
-/* --- Styles pour les détails et les cases à cocher du premier menu --- */
+/* --- Styles détails et cases à cocher --- */
 #menuContent details {
   margin-bottom: 10px;
   border-radius: 25px;
@@ -161,15 +155,11 @@ body, html {
   background: none;
 }
 
-#menuContent details details summary {
-  font-size: 15px;
-}
-
 #menuContent input[type="checkbox"] {
   margin-right: 5px;
 }
 
-/* --- Styles pour arrondir les cases à cocher dans le menu des couches --- */
+/* --- Cases rondes menu couches --- */
 #layersMenuContent input[type="checkbox"] {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -216,10 +206,17 @@ body, html {
 
 #radarTitle {
   text-align: center;
-  font-weight: bold;
+  
   margin-bottom: 5px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
 }
 
+#radarexplication{
+  text-align: center;
+  
+  margin-bottom: 45px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
 
-
-
+}
