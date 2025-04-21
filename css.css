@@ -1,291 +1,90 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-body, html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  font-family: 'Poppins', sans-serif;
-}
-
-#header {
-  position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 103;
-    background-color: rgb(35, 36, 48);
-    height: 65px;
-}
-
-#header-logo {
-  display: flex;
-  align-items:center;
-  gap: 0px;
-  white-space: nowrap;
-  color: rgb(255, 255, 255);
-  font-size: 16px;
-  margin-left: 0px;
-  text-decoration: none;
-  font-weight: bold;
-  font-family: inherit;
-  font-size: 36px;
-}
+/* Logo dans le titre */ 
 
 #header img {
-  max-height: 60px;
-  margin-left: 26px;
-  margin-top: 3px;  
+    max-height: 150px; /*taille du logo (bouge la taille du bandeau aussi) */ 
+    /* transform: translateY(100%); /*permet de modifier la hauteur du logo*/  
+}   
+
+
+/* couleurs titre démonstrateur */ 
+.green-text {
+    color: #25d366;  /* Le mot "Rennes" sera en vert */
+    font-weight: bold;
+}
+
+.white-text {
+    color: white;  /* Le texte "| Quartier Villejean" sera en blanc */
+    font-family: "Gill Sans", sans-serif; 
+}
+
+/* mettre la police en gras + pour mettre en itlaique ajouter une balise <em> autour du texte qu'on veut mettre en italique*/ 
+
+.bold-text {
+    font-weight: bold;
+}
+
+/* bouton accueil */
+
+#accueil {
+    background-color: #c54d16; /* Choisir une couleur pour le bouton */
+    color: white;
+    padding: 5px 10px;
+    font-family: "Gill Sans", sans-serif; 
+    margin-right: 100%;
+    border: none;
+    border: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#accueil:hover {
+    background-color: #199b43; /* Couleur du bouton au survol */
 }
 
 
-#header-links-default {
-  display: flex;
-  align-items: center;
-  margin-right: 26px;
+/*changements de fonds de carte */
+
+/* #menu {
+    position: absolute;
+    top: 150px;
+    left: 5px;
+    background: #FF934F;
+    padding: 8px; /* taille de la fenêtre de choix *
+    z-index: 1000;
+    border-radius: 5px;
+    box-shadow: 0 0 10px black; 
+
+
+/* modifier la police du "label" */ 
+
+label.white-text {
+    color: white;
+    font-family: "Gill Sans", sans-serif; 
 }
 
-#header-links-default a{
-  display: flex;
-  align-items: center;
-  text-decoration-line: inherit;
-  font-size: 16px;
-  height: 20px;
-  position: relative;
-  color: rgb(255, 255, 255);
-  margin-right: 24px;
-  background-color: transparent;
+/*SIDE BAR */
+
+    #menu3 {
+        position: absolute;
+        top: 170px;
+        bottom: 5px;
+        right: 5px;
+        background: #ffa566;
+        font-family: "Gill Sans", sans-serif;
+        padding: 15px;  
+        z-index: 1000;
+        border-radius: 0px;
+        box-shadow: 0 0 20px black;
+        color: white;
+        display: inline-flex; /* Utiliser inline-flex pour adapter la largeur au contenu */
+        flex-direction: column; /* Assure que le contenu est empilé verticalement */
+    
+    }
+
+#menu3 label { /*mettre "label" permet de changer uniquement un élément du menu et pas toute la sélection*/
+    display: block; 
+    margin-bottom: 15px; 
 }
 
+/* Bouton de sélection de critères */
 
-#help-button {
-  color: rgb(255, 255, 255);
-  border-top-width: 1px;
-  border-right-width: 1px;
-  border-bottom-width: 1px;
-  border-left-width: 1px;
-  border-top-style: solid;
-  border-right-style: solid;
-  border-bottom-style: solid;
-  border-left-style: solid;
-  border-top-color: rgb(158, 162, 174);
-  border-right-color: rgb(158, 162, 174);
-  border-bottom-color: rgb(158, 162, 174);
-  border-left-color: rgb(158, 162, 174);
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
-  border-bottom-left-radius: 12px;
-  padding-top: 6px;
-  padding-right: 18px;
-  padding-left: 18px;
-  line-height: 18px;
-  background-color: transparent;
-  margin-left: 42px;
-  cursor: pointer;
-  overflow: visible;
-  font-family: inherit;
-  font-size: 100%;
-  line-height: 1.15;
-  margin: 0;
-  text-align: center;
-  align-items: center;
-}
-
-
-
-
-
-
-
-#map {
-  flex-grow: 1;
-  height: calc(100vh - 200px);
-}
-
-#infoBox {
-  position: absolute; 
-  top:75px; 
-  left:10px; 
-  background: rgba(255,255,255,0.8); 
-  padding:10px; 
-  border-radius:4px; 
-  z-index:1000; 
-  max-width:250px; 
-  font-family: inherit; 
-  font-size:14px;
-}
-
-#tools-panel{
-  
-}
-
-/* --- Menu des communes --- */
-#dropdownMenu {
-  position: absolute;
-  top: 15%;
-  right: 50px;
-  display: flex;
-  flex-direction: row-reverse; /* le bouton toggle à droite */
-  align-items: flex-start;
-  z-index: 1100;
-}
-
-#toggleButton {
-  width: 70px;
-  height: 70px;
-  background: #5a5451;
-  border-radius: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  margin-left: 5px;
-  overflow: hidden;
-  position: fixed;
-}
-
-#toggleButton img {
-  width: 150%;
-  height: auto;
-  object-fit: contain;
-  margin: 0;
-  display: block;
-}
-
-#menuContent {
-  display: none;
-  background: #5a5451;
-  color: white;
-  border-radius: 15px;
-  padding: 10px;
-  margin-right: 30%;
-  min-width: 200px;
-  min-height: 300px;
-  overflow-y: auto;
-  
-}
-
-#dropdownMenu.open #menuContent {
-  display: block;
-}
-
-/* --- Menu des couches --- */
-#dropdownLayersMenu {
-  position: absolute;
-  top: calc(15% + 100px); /* Ajuster l'espacement pour éviter le chevauchement */
-  right: 50px;
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: flex-start;
-  z-index: 1000;
-}
-
-#layersToggleButton {
-  width: 70px;
-  height: 70px;
-  background: #5a5451;
-  border-radius: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  margin-left: 5px;
-  overflow: hidden;
-  position: fixed;
-}
-
-#layersToggleButton img {
-  width: 150%;
-  height: auto;
-  object-fit: contain;
-  margin: 0;
-  display: block;
-}
-
-#layersMenuContent {
-  display: none;
-  background: #5a5451;
-  color: white;
-  border-radius: 15px;
-  padding: 10px;
-  margin-right: 35%;
-  min-width: 200px;
-  min-height: 150px;
-  overflow-y: auto;
-}
-
-#dropdownLayersMenu.open #layersMenuContent {
-  display: block;
-}
-
-/* --- Styles pour les détails et les cases à cocher du premier menu --- */
-#menuContent details {
-  margin-bottom: 10px;
-  border-radius: 25px;
-  background: #5a5451;
-  color: white;
-  border: none;
-}
-
-#menuContent summary {
-  font-weight: bold;
-  font-size: 16px;
-  cursor: pointer;
-  padding: 5px 0;
-}
-
-#menuContent details[open] > summary {
-  border-bottom: 1px solid white;
-}
-
-#menuContent details details {
-  margin-left: 15px;
-  background: none;
-}
-
-#menuContent details details summary {
-  font-size: 15px;
-}
-
-#menuContent input[type="checkbox"] {
-  margin-right: 5px;
-}
-
-/* --- Styles pour arrondir les cases à cocher dans le menu des couches --- */
-#layersMenuContent input[type="checkbox"] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ccc;
-  border-radius: 50%;
-  outline: none;
-  cursor: pointer;
-  margin-right: 5px;
-  position: relative;
-  vertical-align: middle;
-}
-
-#layersMenuContent input[type="checkbox"]:checked {
-  border-color: #5a5451;
-  background-color: #5a5451;
-}
-
-#layersMenuContent input[type="checkbox"]:checked::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: white;
-}

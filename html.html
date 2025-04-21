@@ -1,151 +1,68 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Val'HOME</title>
-  <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
-  <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Val'HOME | Carte interactive</title>
+    <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        #header {
+            background: #fc783b;
+            color: white;
+            text-align: left;
+            font-family: "Gill Sans", sans-serif;
+            padding:1px; /*taille du bandeau */ 
+            font-size: 30px; /*taille de la police */
+            padding-top: -20px; 
+        }
+     
+        #map {
+            flex-grow: 1;
+            height: calc(100vh - 200px);
+        }
+    </style>
 </head>
 <body>
-   <!-- Bandeau du démonstrateur -->
-   <div id="header">
-    <a id="header-logo" href="/">
-      <img src="https://raw.githubusercontent.com/falgoust1/valhome/Emmanuel/logo4.png" alt="Logo"> Val'Home
-    </a> 
-    <div id="header-links-default">
-      <a href="">Accueil</a>
-      <a href="">Carte</a>
-      <a href="https://github.com/falgoust1/valhome">Github</a>
-      <button id="help-button">Se connecter</button>
-    </div>
-  </div>
+    
+    <!--Configurer le titre et bandeau du démonstrateur--> 
+    <div id="header">
+        <div id="header">
+            <img src="images/logo.png" width="150" height="200"> <!-- width = longueur/ height = hauteur-->
+         </div>        
+    </div> 
+    <div id="map"></div>
 
-  <!-- Conteneur de la carte -->
-  <div id="map">
-    <div id="infoBox">
-      <!-- Les infos sur la commune s'afficheront ici -->
-    </div>
-  </div>
-  
-
-  <div id="tools-panel">
-  <!-- Premier menu : gestion des critères (couches communes) -->
-  <div id="dropdownMenu">
-    <!-- Panneau de contenu masqué par défaut -->
-    <div id="menuContent">
-      <details close>
-        <summary><strong>🏠 Prix immobilier</strong></summary>
-        <div>
-          <input type="checkbox" id="DVFCheckbox" checked />
-          <label for="DVFCheckbox">DVF</label>
+        <!--Configurer le menu pour les fonds de carte--> 
+        <div id="menu">
+            <label for="style-selector" class="white-text"><strong>Choix du fond de carte</strong>    </label>
+            <select id="style-selector">
+                <option class="green-text" value="https://openmaptiles.geo.data.gouv.fr/styles/positron/style.json">Light </option>
+                <option class="green-text" value="https://openmaptiles.geo.data.gouv.fr/styles/dark-matter/style.json">Dark</option>
+            </select>
         </div>
-      </details>
-      <details close>
-        <summary><strong>🧭 Accessibilité aux services</strong></summary>
-        <details close>
-          <summary><strong>🎓 Éducation</strong></summary>
-          <div>
-            <input type="checkbox" id="ecoleCheckbox" />
-            <label for="ecoleCheckbox">École</label>
-          </div>
-          <div>
-            <input type="checkbox" id="collegeCheckbox" />
-            <label for="collegeCheckbox">Collège</label>
-          </div>
-          <div>
-            <input type="checkbox" id="lyceeCheckbox" />
-            <label for="lyceeCheckbox">Lycée</label>
-          </div>
-        </details>
-        <details close>
-          <summary><strong>🛒 Services alimentaires</strong></summary>
-          <div>
-            <input type="checkbox" id="supermarcheCheckbox" />
-            <label for="supermarcheCheckbox">Supermarchés</label>
-          </div>
-          <div>
-            <input type="checkbox" id="boulangerieCheckbox" />
-            <label for="boulangerieCheckbox">Boulangeries</label>
-          </div>
-        </details>
-        <details close>
-          <summary><strong>🩺 Santé</strong></summary>
-          <div>
-            <input type="checkbox" id="medecinCheckbox" />
-            <label for="medecinCheckbox">Médecins</label>
-          </div>
-        </details>
-      </details>
-      <details close>
-        <summary><strong>🌳 Environnement</strong></summary>
-        <div>
-          <input type="checkbox" id="eolienneCheckbox" />
-          <label for="eolienneCheckbox">Éoliennes</label>
-        </div>
-        <div>
-          <input type="checkbox" id="routeCheckbox" />
-          <label for="routeCheckbox">Route > 70 km/h</label>
-        </div>
-      </details>
-    </div>
-    <!-- Bouton toggle pour le premier menu -->
-    <div id="toggleButton">
-      <img src="https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/gurwan/engrenage.svg" alt="Toggle Menu">
-    </div>
-  </div>
-  
-  <!-- Second menu : gestion des couches (exemple : École 35) -->
-  <div id="dropdownLayersMenu">
-    <!-- Panneau de contenu masqué par défaut -->
-    <div id="layersMenuContent">
-      <label>
-        <input type="checkbox" id="ecole35Checkbox">
-        Écoles 
-      </label>
-      <br>
-      <label>
-          <input type="checkbox" id="college35Checkbox">
-          Collèges 
-      </label>
-      <br>
-      <label>
-          <input type="checkbox" id="lycee35Checkbox">
-          Lycées
-      </label>
-      <br>
-      <label>
-          <input type="checkbox" id="supermarche35Checkbox">
-          Supermarchés
-      </label>
-      <br>
-      <label>
-          <input type="checkbox" id="boulangerie35Checkbox">
-          Boulangeries
-      </label>
-      <br>
-      <label>
-          <input type="checkbox" id="medecin35Checkbox">
-          Médecins
-      </label>
-      <br>
-      <label>
-          <input type="checkbox" id="eolienne35Checkbox">
-          Eoliennes
-      </label>
-      <!-- Vous pouvez ajouter d'autres cases pour d'autres couches si besoin -->
-    </div>
-    <!-- Bouton toggle pour le second menu -->
-    <div id="layersToggleButton">
-      <!-- Exemple d'icône Layers, à modifier si besoin -->
-      <img src="https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/gurwan/position.svg" alt="Toggle Layers">
-    </div>
-  </div>
-</div>
 
+        <!--Configurer le menu pour les types de cartes--> 
 
-  <script src="geostats.min.js"></script>
-  <script src="js.js"></script>
+        <div id="menu3">
+            <label class="white-text"><strong>Choix des critères</strong></label>
+            <div id="style-selector">
+                <input type="checkbox"/>
+            <label for="RoutesCB">Bibilothèque</label>
+            </div>
+        </div>
+        
+
+    <!-- Lien vers fichier JavaScript -->
+    <script src="js.js"></script>
 </body>
 </html>
