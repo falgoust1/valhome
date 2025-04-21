@@ -15,9 +15,10 @@
   <!-- Bandeau du démonstrateur -->
   <div id="header">
     <a id="header-logo" href="/">
+      <h1 id="mainTitle">VAL’HOME</h1>
       <img src="https://raw.githubusercontent.com/falgoust1/valhome/Emmanuel/image.png" alt="Logo">
     </a>
-    <div id="header-links-default">
+        <div id="header-links-default">
       <a href="">Accueil</a>
       <a href="">Carte</a>
       <a href="https://github.com/falgoust1/valhome">Github</a>
@@ -31,7 +32,7 @@
 
     <div id="radarContainer">
       <div id="radarTitle">Score de chaque critère pour l'entité sélectionnée</div>
-      <div id="radarexplication">Plus le score est élevé mieux c'est !</div>
+      <div id="radarexplication">Plus le score est élevé mieux c'est ! <br> (Sélectionner au moins 3 critères)</div>
       <div id="radarLocation" style="text-align:center; font-style:italic;"></div>
       <canvas id="radarChart"></canvas>
     </div>
@@ -52,16 +53,16 @@
          <label for="checkAllCriteria"><strong>Cocher tous les critères</strong></label>
         </div>
       <details close>
-        <summary><strong>🏠 Prix immobilier</strong></summary>
+        <summary><strong> Prix immobilier</strong></summary>
         <div>
           <input type="checkbox" id="DVFCheckbox" checked />
-          <label for="DVFCheckbox">DVF</label>
+          <label for="DVFCheckbox">Demmande de valeurs foncières (DVF)</label>
         </div>
       </details>
       <details close>
-        <summary><strong>🧭 Accessibilité aux services</strong></summary>
+        <summary><strong> Accessibilité aux services</strong></summary>
         <details close>
-          <summary><strong>🎓 Éducation</strong></summary>
+          <summary><strong> Éducation</strong></summary>
           <div>
             <input type="checkbox" id="ecoleCheckbox" />
             <label for="ecoleCheckbox">École à moins de 5 min</label>
@@ -76,7 +77,7 @@
           </div>
         </details>
         <details close>
-          <summary><strong>🛒 Services alimentaires</strong></summary>
+          <summary><strong> Services alimentaires</strong></summary>
           <div>
             <input type="checkbox" id="supermarcheCheckbox" />
             <label for="supermarcheCheckbox">Supermarchés à moins de 10 min</label>
@@ -87,7 +88,7 @@
           </div>
         </details>
         <details close>
-          <summary><strong>🩺 Santé</strong></summary>
+          <summary><strong> Santé</strong></summary>
           <div>
             <input type="checkbox" id="medecinCheckbox" />
             <label for="medecinCheckbox">Médecins à moins de 10 min</label>
@@ -95,7 +96,7 @@
         </details>
       </details>
       <details close>
-        <summary><strong>🌳 Environnement</strong></summary>
+        <summary><strong> Environnement</strong></summary>
         <div>
           <input type="checkbox" id="eolienneCheckbox" />
           <label for="eolienneCheckbox">Éoliennes à moins de 2km</label>

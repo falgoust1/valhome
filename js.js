@@ -95,7 +95,7 @@ function addCommunesLayer() {
         paint: {
           'fill-color': '#4da8b7',
           'fill-opacity': 0.1,
-          'fill-outline-color': '#f3f1ef'
+          'fill-outline-color': '#e7e7e7'
         }
       });
 
@@ -115,9 +115,9 @@ map.on('mousemove', 'Communes', e => {
   const p = e.features[0].properties;
   document.getElementById('infoBox').innerHTML =
     `<div style="font-weight:bold;">${p.nom_com}</div>` +
-    `<div>Habitants: <strong>${p.population}</strong></div>` +
-    `<div>Prix médian au m²: <strong>${p.prixm2_median || 'N/A'}€</strong></div>` +
-    `<div>Ventes: <strong>${p.prixm2_count || 'N/A'}</strong></div>`;
+    `<div>Habitants : <strong>${p.population}</strong></div>` +
+    `<div>Prix médian au m² : <strong>${p.prixm2_median || 'N/A'}€</strong></div>` +
+    `<div>Nombre de ventes (entre 2019 et 2025) : <strong>${p.prixm2_count || 'N/A'}</strong></div>`;
   updateRadarChart(p);
 });
 
@@ -191,9 +191,18 @@ map.on('click', 'Communes', e => {
     paint: {
       'fill-color': '#4da8b7',
       'fill-opacity': 0.1,
-      'fill-outline-color': '#f3f1ef'
+      'fill-outline-color': '#e7e7e7'
     }
   });
+
+
+  // Remonter les couches de points au-dessus des Sections
+  rawLayers.forEach(([id]) => {
+    if (map.getLayer(id)) {
+      map.moveLayer(id);
+    }
+  });
+
   map.fitBounds(getBBox(feats), { padding: 20 });
   map.setLayoutProperty('Communes', 'visibility', 'none');
   updateSectionsStyle();
@@ -484,7 +493,7 @@ map.on('mousemove', 'Sections', e => {
   document.getElementById('infoBox').innerHTML =
     `<div style="font-weight:bold;"> Section cadastrale: ${p.id}</div>` +
     `<div>Prix médian au m²: <strong>${p.prixm2_median || 'N/A'}€</strong></div>` +
-    `<div>Transactions: <strong>${p.prixm2_count || 'N/A'}</strong></div>`;
+    `<div>Nombre de ventes (entre 2019 et 2025): <strong>${p.prixm2_count || 'N/A'}</strong></div>`;
   updateRadarChartSections(p);
 });
 
@@ -527,6 +536,14 @@ map.on('zoomend', () => {
         'fill-outline-color': '#f3f1ef'
       }
     });
+
+    // Remonter les couches de points au-dessus des Sections
+    rawLayers.forEach(([id]) => {
+      if (map.getLayer(id)) {
+        map.moveLayer(id);
+      }
+    });
+
     // On masque les communes
     map.setLayoutProperty('Communes', 'visibility', 'none');
     updateSectionsStyle();
