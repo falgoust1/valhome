@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Val'HOME</title>
+  <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css.css">
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+  <!-- Bandeau du démonstrateur -->
+  <div id="header">
+    <a id="header-logo" href="/">
+      <h1 id="mainTitle">VAL’HOME</h1>
+      <img src="https://raw.githubusercontent.com/falgoust1/valhome/Emmanuel/image.png" alt="Logo">
+    </a>
+        <div id="header-links-default">
+      <a href="">Accueil</a>
+      <a href="">Carte</a>
+      <a href="https://github.com/falgoust1/valhome">Github</a>
+      <button id="help-button">Se connecter</button>
+    </div>
+  </div>
+    
+  
+  <div id="map">
+    <div id="infoBox" ></div>
+
+    <div id="radarContainer">
+      <div id="radarTitle">Score de chaque critère pour l'entité sélectionnée</div>
+      <div id="radarexplication">Plus le score est élevé mieux c'est ! <br> (Sélectionner au moins 3 critères)</div>
+      <div id="radarLocation" style="text-align:center; font-style:italic;"></div>
+      <canvas id="radarChart"></canvas>
+    </div>
+    
+  </div>
+  
+  <!-- Premier menu : gestion des critères (couches communes) -->
+  <div id="dropdownMenu">
+    <!-- Panneau de contenu masqué par défaut -->
+      <div id="menuContent">
+        
+        <div style="margin-bottom: 10px;">
+          <input type="checkbox" id="clearAllCriteria">
+          <label for="clearAllCriteria"><strong>Décocher tous les critères</strong></label>
+        </div>
+        <div style="margin-bottom: 10px;">
+         <input type="checkbox" id="checkAllCriteria">
+         <label for="checkAllCriteria"><strong>Cocher tous les critères</strong></label>
+        </div>
+      <details close>
+        <summary><strong> Prix immobilier</strong></summary>
+        <div>
+          <input type="checkbox" id="DVFCheckbox" checked />
+          <label for="DVFCheckbox">Demmande de valeurs foncières (DVF)</label>
+        </div>
+      </details>
+      <details close>
+        <summary><strong> Accessibilité aux services</strong></summary>
+        <details close>
+          <summary><strong> Éducation</strong></summary>
+          <div>
+            <input type="checkbox" id="ecoleCheckbox" />
+            <label for="ecoleCheckbox">École à moins de 5 min</label>
+          </div>
+          <div>
+            <input type="checkbox" id="collegeCheckbox" />
+            <label for="collegeCheckbox">Collège à moins de 10 min</label>
+          </div>
+          <div>
+            <input type="checkbox" id="lyceeCheckbox" />
+            <label for="lyceeCheckbox">Lycée à moins de 15 min</label>
+          </div>
+        </details>
+        <details close>
+          <summary><strong> Services alimentaires</strong></summary>
+          <div>
+            <input type="checkbox" id="supermarcheCheckbox" />
+            <label for="supermarcheCheckbox">Supermarchés à moins de 10 min</label>
+          </div>
+          <div>
+            <input type="checkbox" id="boulangerieCheckbox" />
+            <label for="boulangerieCheckbox">Boulangeries à moins de 5 min</label>
+          </div>
+        </details>
+        <details close>
+          <summary><strong> Santé</strong></summary>
+          <div>
+            <input type="checkbox" id="medecinCheckbox" />
+            <label for="medecinCheckbox">Médecins à moins de 10 min</label>
+          </div>
+        </details>
+      </details>
+      <details close>
+        <summary><strong> Environnement</strong></summary>
+        <div>
+          <input type="checkbox" id="eolienneCheckbox" />
+          <label for="eolienneCheckbox">Éoliennes à moins de 2km</label>
+        </div>
+        <div>
+          <input type="checkbox" id="routeCheckbox" />
+          <label for="routeCheckbox">Route > 70 km/h à moins de 300m</label>
+        </div>
+      </details>
+    </div>
+    <!-- Bouton toggle pour le premier menu -->
+    <div id="toggleButton">
+      <img src="https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/gurwan/engrenage.svg" alt="Toggle Menu">
+    </div>
+  </div>
+  
+  <!-- Second menu : gestion des couches (exemple : École 35) -->
+  <div id="dropdownLayersMenu">
+    <!-- Panneau de contenu masqué par défaut -->
+    <div id="layersMenuContent">
+      <label>
+        <input type="checkbox" id="ecole35Checkbox">
+        Écoles 
+      </label>
+      <br>
+      <label>
+          <input type="checkbox" id="college35Checkbox">
+          Collèges 
+      </label>
+      <br>
+      <label>
+          <input type="checkbox" id="lycee35Checkbox">
+          Lycées
+      </label>
+      <br>
+      <label>
+          <input type="checkbox" id="supermarche35Checkbox">
+          Supermarchés
+      </label>
+      <br>
+      <label>
+          <input type="checkbox" id="boulangerie35Checkbox">
+          Boulangeries
+      </label>
+      <br>
+      <label>
+          <input type="checkbox" id="medecin35Checkbox">
+          Médecins
+      </label>
+      <br>
+      <label>
+          <input type="checkbox" id="eolienne35Checkbox">
+          Eoliennes
+      </label>
+      <!-- Vous pouvez ajouter d'autres cases pour d'autres couches si besoin -->
+    </div>
+    <!-- Bouton toggle pour le second menu -->
+    <div id="layersToggleButton">
+      <!-- Exemple d'icône Layers, à modifier si besoin -->
+      <img src="https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/gurwan/position.svg" alt="Toggle Layers">
+    </div>
+  </div>
+  
+  <script src="geostats.min.js"></script>
+  <script src="js.js"></script>
+</body>
+</html>
