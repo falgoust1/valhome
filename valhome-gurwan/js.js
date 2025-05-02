@@ -10,7 +10,16 @@ let currentSectionsData = null;
 
 const initialViewZoom      = 8.5;
 const switchToCommunesZoom = 10.5;
-const autoSectionsZoom = 11;  //Affichage couche sections
+// Seuil de bascule vers la vue satellite
+const switchToSatelliteZoom = 13.5;
+// IDs pour la source et la couche satellite
+const satelliteSourceId = 'SatelliteSource';
+const satelliteLayerId  = 'SatelliteLayer';
+// URL du style raster (extrait de votre satelite.json)
+const satelliteTilesURL = 'https://www.google.com/maps/vt?lyrs=s@180&gl=cn&x={x}&y={y}&z={z}';
+const fadeDuration       = 500;
+let activeVectorLayer = 'Communes';
+
 
 // --- Map des critères vers noms de propriétés ---
 const communeCriteriaMap = {
@@ -71,6 +80,11 @@ const map = new maplibregl.Map({
   zoom: initialViewZoom,
   attributionControl: false
 });
+
+
+
+
+
 map.addControl(new maplibregl.NavigationControl(), 'bottom-left');
 map.addControl(new maplibregl.ScaleControl({ maxWidth: 120, unit: 'metric' }));
 map.addControl(new maplibregl.AttributionControl({ customAttribution: '© Master SIGAT | © ValHOME' }), 'bottom-right');
@@ -99,6 +113,21 @@ function addCommunesLayer() {
         }
       });
 
+      if (!map.getSource(satelliteSourceId)) {
+        map.addSource(satelliteSourceId, {
+          type: 'raster',
+          tiles: [ satelliteTilesURL ],
+          tileSize: 256,
+          attribution: '© Google Maps'
+        });
+        map.addLayer({
+          id: satelliteLayerId,
+          type: 'raster',
+          source: satelliteSourceId,
+          layout: { visibility: 'none' }
+        }, 'Communes');
+      }
+
       map.on('mouseenter', 'Communes', () => {
         map.getCanvas().style.cursor = 'pointer';
       });
@@ -117,7 +146,7 @@ map.on('mousemove', 'Communes', e => {
     `<div style="font-weight:bold;">${p.nom_com}</div>` +
     `<div>Habitants : <strong>${p.population}</strong></div>` +
     `<div>Prix médian au m² : <strong>${p.prixm2_median || 'N/A'}€</strong></div>` +
-    `<div>Nombre de ventes (entre 2019 et 2025) : <strong>${p.prixm2_count || 'N/A'}</strong></div>`;
+    `<div>Nombre de ventes (entre 2019 et 2024) : <strong>${p.prixm2_count || 'N/A'}</strong></div>`;
   updateRadarChart(p);
 });
 
@@ -166,10 +195,12 @@ function updateLayerStyle(layerId, data, sel) {
 }
 
 function updateCommunesStyle() {
+  if (!map.getLayer('Communes')) return;
   updateLayerStyle('Communes', communesData, getSelectedProps(communeCriteriaMap));
 }
 
 function updateSectionsStyle() {
+  if (!map.getLayer('Sections')) return;
   updateLayerStyle('Sections', currentSectionsData, getSelectedProps(sectionCriteriaMap));
 }
 
@@ -194,6 +225,8 @@ map.on('click', 'Communes', e => {
       'fill-outline-color': '#e7e7e7'
     }
   });
+  activeVectorLayer = 'Sections';
+
 
 
   // Remonter les couches de points au-dessus des Sections
@@ -493,7 +526,7 @@ map.on('mousemove', 'Sections', e => {
   document.getElementById('infoBox').innerHTML =
     `<div style="font-weight:bold;"> Section cadastrale: ${p.id}</div>` +
     `<div>Prix médian au m²: <strong>${p.prixm2_median || 'N/A'}€</strong></div>` +
-    `<div>Nombre de ventes (entre 2019 et 2025): <strong>${p.prixm2_count || 'N/A'}</strong></div>`;
+    `<div>Nombre de ventes (entre 2019 et 2024): <strong>${p.prixm2_count || 'N/A'}</strong></div>`;
   updateRadarChartSections(p);
 });
 
@@ -516,48 +549,6 @@ Object.keys(sectionCriteriaMap).forEach(id => {
 
 
 
-// Affichage automatique des sections au-delà du zoom autoSectionsZoom
-map.on('zoomend', () => {
-  const z = map.getZoom();
-
-  // Si on est assez zoomé et qu'aucune couche Sections n'existe
-  if (z >= autoSectionsZoom && !map.getLayer('Sections')) {
-    if (!sectionsData) return;
-    // On affiche toutes les sections
-    currentSectionsData = sectionsData;
-    map.addSource('Sections', { type: 'geojson', data: currentSectionsData });
-    map.addLayer({
-      id: 'Sections',
-      type: 'fill',
-      source: 'Sections',
-      paint: {
-        'fill-color': '#4da8b7',
-        'fill-opacity': 0.1,
-        'fill-outline-color': '#f3f1ef'
-      }
-    });
-
-    // Remonter les couches de points au-dessus des Sections
-    rawLayers.forEach(([id]) => {
-      if (map.getLayer(id)) {
-        map.moveLayer(id);
-      }
-    });
-
-    // On masque les communes
-    map.setLayoutProperty('Communes', 'visibility', 'none');
-    updateSectionsStyle();
-  }
-  // Si on est dézoomé en dessous du seuil et que la couche existe
-  else if (z < autoSectionsZoom && map.getLayer('Sections')) {
-    map.removeLayer('Sections');
-    map.removeSource('Sections');
-    currentSectionsData = null;
-    // On réaffiche les communes
-    map.setLayoutProperty('Communes', 'visibility', 'visible');
-    updateCommunesStyle();
-  }
-});
 
 
 // Bouton “Décocher tous les critères”
@@ -615,3 +606,60 @@ document.getElementById('checkAllCriteria').addEventListener('change', function(
   // Réinitialise la checkbox pour pouvoir la recliquer ultérieurement
   this.checked = false;
 });
+
+map.on('zoomend', () => {
+  const z       = map.getZoom();
+  const showSat = z > switchToSatelliteZoom;
+
+  // 1️⃣ Satellite : on bascule simplement sa visibilité
+  if (map.getLayer(satelliteLayerId)) {
+    map.setLayoutProperty(satelliteLayerId, 'visibility', showSat ? 'visible' : 'none');
+  }
+
+  // 2️⃣ Déterminer la couche vecteur active
+  const active = map.getLayer('Sections') ? 'Sections' : 'Communes';
+
+  // 3️⃣ Si on est au-dessus du seuil satellite → on fait disparaître les polygones
+  if (showSat) {
+    map.setPaintProperty('Communes', 'fill-opacity', 0);
+    if (map.getLayer('Sections')) {
+      map.setPaintProperty('Sections', 'fill-opacity', 0);
+    }
+    return;
+  }
+
+  // 4️⃣ Si on redescend sous 10.5 et qu’on avait les Sections → on repasse aux Communes
+  if (z <= switchToCommunesZoom && active === 'Sections') {
+    // on retire d’abord la couche Sections
+    map.removeLayer('Sections');
+    map.removeSource('Sections');
+    currentSectionsData = null;
+  }
+
+  // 5️⃣ Ré-application du style dynamique sur la couche active
+  if (active === 'Communes') {
+    updateCommunesStyle();
+  } else {
+    updateSectionsStyle();
+  }
+
+  // 6️⃣ On récupère l’opacité cible depuis le style dynamique
+  const targetOpacity = parseFloat(
+    map.getPaintProperty(active, 'fill-opacity')
+  ) || 0.1;
+
+  // 7️⃣ On fixe cette opacité (MapLibre l’animera grâce au transition ci-dessus)
+  map.setPaintProperty('Communes', 'fill-opacity',
+    active === 'Communes' ? targetOpacity : 0
+  );
+  if (map.getLayer('Sections')) {
+    map.setPaintProperty('Sections', 'fill-opacity',
+      active === 'Sections' ? targetOpacity : 0
+    );
+  }
+});
+
+
+
+
+

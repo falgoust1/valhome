@@ -117,14 +117,15 @@ body, html {
 /* --- InfoBox --- */
 #infoBox {
   position: absolute;
-  margin-top: 100px;
-  left: 20px;
-  background-color: #5a5451;
+  margin-top: 110px;
+  left: 30px;
+  background-color: #232221;
+  opacity: 0.8;
   color: #f1ecec;
   padding: 15px;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px #5a5451;
-  max-width: 290px;
+  border-radius: 12px;
+  font-family: Poppins;
+  max-width: 320px;
   font-size: 14px;
   z-index: 1100;
 }
@@ -133,8 +134,8 @@ body, html {
 /* --- Menu des communes --- */
 #dropdownMenu {
   position: absolute;
-  top: 15%;
-  right: 50px;
+  top: 110px;
+  right: 30px;
   display: flex;
   flex-direction: row-reverse;
   align-items: flex-start;
@@ -144,16 +145,21 @@ body, html {
 #toggleButton {
   width: 70px;
   height: 70px;
-  background: #5a5451;
-  border-radius: 15px;
+  top: 110px;
+  background: #232221;
+  opacity: 0.8;
+  border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   margin-left: 5px;
-  overflow: hidden;
+  transition: background-color 0.2s;
+  background-repeat: no-repeat;
   position: fixed;
 }
+
+
 
 #toggleButton img {
   width: 150%;
@@ -164,9 +170,10 @@ body, html {
 
 #menuContent {
   display: none;
-  background: #5a5451;
+  background: #232221;
+  opacity: 0.8;
   color: white;
-  border-radius: 15px;
+  border-radius: 12px;
   padding: 10px;
   margin-right: 30%;
   min-width: 260px;
@@ -181,8 +188,8 @@ body, html {
 /* --- Menu des couches --- */
 #dropdownLayersMenu {
   position: absolute;
-  top: calc(15% + 100px);
-  right: 50px;
+  top: calc(13% + 100px);
+  right: 30px;
   display: flex;
   flex-direction: row-reverse;
   align-items: flex-start;
@@ -192,8 +199,9 @@ body, html {
 #layersToggleButton {
   width: 70px;
   height: 70px;
-  background: #5a5451;
-  border-radius: 15px;
+  background: #232221;
+  opacity: 0.8;
+  border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -212,9 +220,10 @@ body, html {
 
 #layersMenuContent {
   display: none;
-  background: #5a5451;
+  background: #232221;
+  opacity: 0.8;
   color: white;
-  border-radius: 15px;
+  border-radius: 12px;
   padding: 10px;
   margin-right: 35%;
   min-width: 200px;
@@ -230,7 +239,6 @@ body, html {
 #menuContent details {
   margin-bottom: 10px;
   border-radius: 25px;
-  background: #5a5451;
   color: white;
   border: none;
 }
@@ -272,8 +280,9 @@ body, html {
 }
 
 #layersMenuContent input[type="checkbox"]:checked {
-  border-color: #5a5451;
-  background-color: #5a5451;
+  border-color: #232221;
+  opacity: 0.8;
+  background-color: #232221;
 }
 
 #layersMenuContent input[type="checkbox"]:checked::after {
@@ -292,14 +301,14 @@ body, html {
 #radarContainer {
   position: absolute;
   bottom: 30px;
-  right: 20px;
-  width: auto;
-  height: auto;
-  background-color: #5a5451 !important;
+  right: 30px;
+  width: 20%;
+  height: 40%;
+  background-color: #232221 !important;
+  opacity: 0.8;
   color: #ffffff;
   padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  border-radius: 12px;
   z-index: 1100;
   text-align: center;
   align-items: center;
@@ -308,7 +317,7 @@ body, html {
 #radarChart {
   display: block;
   margin: 0 auto;
-  width: 90%;    /* ajuste ce pourcentage pour agrandir/rétrécir le radar */
+  width: 95%;    /* ajuste ce pourcentage pour agrandir/rétrécir le radar */
   height: auto;  /* laisse Chart.js gérer la hauteur */
 }
 
@@ -316,6 +325,7 @@ body, html {
 #radarTitle {
   text-align: center;
   font-size: 18px;
+  font-family: Poppins;
   margin-bottom: 8px;
   font-weight: 600;
 }
@@ -331,6 +341,6 @@ body, html {
 /* --- Checkbox styling inside menus --- */
 #menuContent input[type="checkbox"],
 #layersMenuContent input[type="checkbox"] {
-  accent-color: #5a5451;
+  accent-color: rgb(64, 120, 232);
 }
 
