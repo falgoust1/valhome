@@ -7,102 +7,86 @@
   <script src="https://unpkg.com/maplibre-gl/dist/maplibre-gl.js"></script>
   <link href="https://unpkg.com/maplibre-gl/dist/maplibre-gl.css" rel="stylesheet" />
   <link rel="stylesheet" href="css.css">
-  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
 <body>
-  <!-- Bandeau du démonstrateur -->
-  <div id="header">
+   <!-- Bandeau du démonstrateur -->
+   <div id="header">
     <a id="header-logo" href="/">
-      <h1 id="mainTitle">VAL’HOME</h1>
-      <img src="https://raw.githubusercontent.com/falgoust1/valhome/Emmanuel/image.png" alt="Logo">
-    </a>
-        <div id="header-links-default">
-      <a href="/Users/emmanueldesmirnoff/Documents/Scolarité/M2/Semestre\ 2/Val\'Home/AppPepite/LandingPage/valhome-landing_page_ok/index.html">Accueil</a>
+      <img src="https://raw.githubusercontent.com/falgoust1/valhome/Emmanuel/logo4.png" alt="Logo"> Val'Home
+    </a> 
+    <div id="header-links-default">
+      <a href="">Accueil</a>
+      <a href="">Carte</a>
       <a href="https://github.com/falgoust1/valhome">Github</a>
       <button id="help-button">Se connecter</button>
     </div>
   </div>
-    
-  
-  <div id="map">
-    <div id="infoBox" ></div>
 
-    <div id="radarContainer">
-      <div id="radarTitle">Score de votre IQV</div>
-      <div id="radarexplication">Plus le score est élevé mieux c'est ! <br> (Sélectionner au moins 3 critères)</div>
-      <div id="radarLocation" style="text-align:center; font-style:italic;"></div>
-      <canvas id="radarChart"></canvas>
+  <!-- Conteneur de la carte -->
+  <div id="map">
+    <div id="infoBox">
+      <!-- Les infos sur la commune s'afficheront ici -->
     </div>
-    
   </div>
   
+
+  <div id="tools-panel">
   <!-- Premier menu : gestion des critères (couches communes) -->
   <div id="dropdownMenu">
     <!-- Panneau de contenu masqué par défaut -->
-      <div id="menuContent">
-        
-        <div style="margin-bottom: 10px;">
-          <input type="checkbox" id="clearAllCriteria">
-          <label for="clearAllCriteria"><strong>Décocher tous les critères</strong></label>
-        </div>
-        <div style="margin-bottom: 10px;">
-         <input type="checkbox" id="checkAllCriteria">
-         <label for="checkAllCriteria"><strong>Cocher tous les critères</strong></label>
-        </div>
+    <div id="menuContent">
       <details close>
-        <summary><strong> Prix immobilier</strong></summary>
+        <summary><strong>🏠 Prix immobilier</strong></summary>
         <div>
           <input type="checkbox" id="DVFCheckbox" checked />
-          <label for="DVFCheckbox">Demmande de valeurs foncières (DVF)</label>
+          <label for="DVFCheckbox">DVF</label>
         </div>
       </details>
       <details close>
-        <summary><strong> Accessibilité aux services</strong></summary>
+        <summary><strong>🧭 Accessibilité aux services</strong></summary>
         <details close>
-          <summary><strong> Éducation</strong></summary>
+          <summary><strong>🎓 Éducation</strong></summary>
           <div>
             <input type="checkbox" id="ecoleCheckbox" />
-            <label for="ecoleCheckbox">École à moins de 5 min</label>
+            <label for="ecoleCheckbox">École</label>
           </div>
           <div>
             <input type="checkbox" id="collegeCheckbox" />
-            <label for="collegeCheckbox">Collège à moins de 10 min</label>
+            <label for="collegeCheckbox">Collège</label>
           </div>
           <div>
             <input type="checkbox" id="lyceeCheckbox" />
-            <label for="lyceeCheckbox">Lycée à moins de 15 min</label>
+            <label for="lyceeCheckbox">Lycée</label>
           </div>
         </details>
         <details close>
-          <summary><strong> Services alimentaires</strong></summary>
+          <summary><strong>🛒 Services alimentaires</strong></summary>
           <div>
             <input type="checkbox" id="supermarcheCheckbox" />
-            <label for="supermarcheCheckbox">Supermarchés à moins de 10 min</label>
+            <label for="supermarcheCheckbox">Supermarchés</label>
           </div>
           <div>
             <input type="checkbox" id="boulangerieCheckbox" />
-            <label for="boulangerieCheckbox">Boulangeries à moins de 5 min</label>
+            <label for="boulangerieCheckbox">Boulangeries</label>
           </div>
         </details>
         <details close>
-          <summary><strong> Santé</strong></summary>
+          <summary><strong>🩺 Santé</strong></summary>
           <div>
             <input type="checkbox" id="medecinCheckbox" />
-            <label for="medecinCheckbox">Médecins à moins de 10 min</label>
+            <label for="medecinCheckbox">Médecins</label>
           </div>
         </details>
       </details>
       <details close>
-        <summary><strong> Environnement</strong></summary>
+        <summary><strong>🌳 Environnement</strong></summary>
         <div>
           <input type="checkbox" id="eolienneCheckbox" />
-          <label for="eolienneCheckbox">Éoliennes à moins de 2km</label>
+          <label for="eolienneCheckbox">Éoliennes</label>
         </div>
         <div>
           <input type="checkbox" id="routeCheckbox" />
-          <label for="routeCheckbox">Route > 70 km/h à moins de 300m</label>
+          <label for="routeCheckbox">Route > 70 km/h</label>
         </div>
       </details>
     </div>
@@ -158,7 +142,9 @@
       <img src="https://raw.githubusercontent.com/falgoust1/valhome/refs/heads/gurwan/position.svg" alt="Toggle Layers">
     </div>
   </div>
-  
+</div>
+
+
   <script src="geostats.min.js"></script>
   <script src="js.js"></script>
 </body>
